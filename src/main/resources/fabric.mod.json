@@ -4,13 +4,15 @@
   "version": "${version}",
 
   "name": "Emoji Type",
-  "description": "A mod that lets you type emoji",
+  "description": "A mod that lets you type minecraft emojis easier!",
   "authors": [
-    "CyborgCabbage"
+    "CyborgCabbage",
+    "Norbiros"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/emoji-type-fabric",
-    "sources": "https://github.com/CyborgCabbage/emojitype"
+    "sources": "https://github.com/Norbiros/emojitype",
+    "issues": "https://github.com/Norbiros/emojitype/issues"
   },
 
   "license": "GPL-3.0",
@@ -31,7 +33,7 @@
 
   "depends": {
     "fabricloader": "*",
-    "minecraft": ">=1.19"
+    "minecraft": ">=1.20"
   },
   "suggests": {
     "cloth-config2" : "*"

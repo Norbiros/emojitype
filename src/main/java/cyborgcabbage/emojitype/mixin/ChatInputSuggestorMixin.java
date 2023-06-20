@@ -5,7 +5,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import cyborgcabbage.emojitype.EmojiTypeMod;
-import net.minecraft.client.gui.screen.CommandSuggestor;
+import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.command.CommandSource;
 import org.jetbrains.annotations.Nullable;
@@ -20,8 +20,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Mixin(CommandSuggestor.class)
-public abstract class CommandSuggestorMixin {
+@Mixin(ChatInputSuggestor.class)
+public abstract class ChatInputSuggestorMixin {
     private static final Pattern COLON_PATTERN = Pattern.compile("(:)");
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("(\\s+)");
 
@@ -29,7 +29,7 @@ public abstract class CommandSuggestorMixin {
 
     @Shadow @Nullable private CompletableFuture<Suggestions> pendingSuggestions;
 
-    @Shadow public abstract void showSuggestions(boolean narrateFirstSuggestion);
+    @Shadow public abstract void show(boolean narrateFirstSuggestion);
 
     @Shadow @Final private boolean slashOptional;
 
@@ -54,7 +54,7 @@ public abstract class CommandSuggestorMixin {
                         if (!this.pendingSuggestions.isDone()) {
                             return;
                         }
-                        this.showSuggestions(false);
+                        this.show(false);
                     });
                     ci.cancel();
                 }

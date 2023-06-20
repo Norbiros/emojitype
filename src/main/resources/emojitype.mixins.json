@@ -6,8 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "CommandSuggestorAccessor",
-    "CommandSuggestorMixin",
+    "ChatInputSuggestorMixin",
+    "ChatInputSuggestorAccessor",
     "SelectionManagerMixin",
     "SuggestionWindowMixin",
     "TextFieldWidgetMixin"

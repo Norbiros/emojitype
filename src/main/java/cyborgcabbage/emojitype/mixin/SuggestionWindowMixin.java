@@ -29,10 +29,6 @@ public abstract class SuggestionWindowMixin {
     private void overwriteComplete(CallbackInfo ci){
         ChatInputSuggestorAccessor inputSuggestor1 = (ChatInputSuggestorAccessor)inputSuggestor;
         ChatInputSuggestorAccessor inputSuggestor = (ChatInputSuggestorAccessor)this.field_21615;
-        System.out.println("UWAGA inputSuggerstor");
-        System.out.println(inputSuggestor1);
-        System.out.println("UWAGA field");
-        System.out.println(inputSuggestor);
         if (inputSuggestor == null) return;
         TextFieldWidget textFieldWidget = inputSuggestor.getTextField();
         Suggestion suggestion = this.suggestions.get(this.selection);

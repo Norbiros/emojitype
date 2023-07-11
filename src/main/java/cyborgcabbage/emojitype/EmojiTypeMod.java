@@ -2,12 +2,12 @@ package cyborgcabbage.emojitype;
 
 import cyborgcabbage.emojitype.config.ConfigUtil;
 import cyborgcabbage.emojitype.emoji.EmojiCode;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmojiTypeMod implements ModInitializer {
+public class EmojiTypeMod implements ClientModInitializer {
     public static String MOD_ID = "emojitype";
 
     public static ArrayList<String> allCodes = new ArrayList<>();
@@ -248,7 +248,7 @@ public class EmojiTypeMod implements ModInitializer {
         }
     };
     @Override
-    public void onInitialize() {
+    public void onInitializeClient() {
         ConfigUtil.deserialise();
     }
 

@@ -17,11 +17,11 @@ public class EmojiTypeConfig implements ModMenuApi {
         return screen -> {
             ConfigUtil.deserialise();
             ConfigBuilder builder = ConfigBuilder.create();
-            builder.setTitle(Text.of("Emoji Type Config"));
+            builder.setTitle(Text.translatable("config.emojitype.title"));
             builder.setSavingRunnable(ConfigUtil::serialise);
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
-            builder.getOrCreateCategory(Text.of("Emoji Type Category"))
-                    .addEntry(entryBuilder.startStrList(Text.of("Emoji Codes"), ConfigUtil.emojiCodeStrings)
+            builder.getOrCreateCategory(Text.translatable("config.emojitype.category"))
+                    .addEntry(entryBuilder.startStrList(Text.translatable("config.emojitype.codes"), ConfigUtil.emojiCodeStrings)
                             .setDefaultValue(() -> {
                                 ArrayList<String> l = new ArrayList<>();
                                 for (EmojiCode ec : EmojiTypeMod.DEFAULT_EMOJI_CODES) {

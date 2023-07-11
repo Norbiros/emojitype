@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "emojitype",
   "version": "${version}",
-
   "name": "Emoji Type",
   "description": "A mod that lets you type minecraft emojis easier!",
   "authors": [
@@ -18,9 +17,9 @@
   "license": "GPL-3.0",
   "icon": "assets/emojitype/icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
-    "main": [
+    "client": [
       "cyborgcabbage.emojitype.EmojiTypeMod"
     ],
     "modmenu": [

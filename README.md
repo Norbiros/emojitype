@@ -15,3 +15,7 @@ Now I am trying to continue developing it.
  - LlamaLad7 from the Fabric Discord server: Thanks for helping CyborgCabbage with some mixin stuff!
  - CyborgCabbage: Huge shoutout to you for creating this awesome mod in the first place!
  - All the contributors: A big thank you to everyone who has contributed to the development of this mod! You rock!
+
+### Links
+ - [Mod on CurseForge](https://legacy.curseforge.com/minecraft/mc-mods/emoji-type)
+ - [Mod on Modrinth](https://modrinth.com/mod/emoji-type)

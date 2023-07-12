@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,16 +26,22 @@ public abstract class ChatInputSuggestorMixin {
     private static final Pattern COLON_PATTERN = Pattern.compile("(:)");
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("(\\s+)");
 
-    @Shadow @Final TextFieldWidget textField;
+    @Shadow
+    @Final
+    TextFieldWidget textField;
 
-    @Shadow @Nullable private CompletableFuture<Suggestions> pendingSuggestions;
+    @Shadow
+    @Nullable
+    private CompletableFuture<Suggestions> pendingSuggestions;
+    @Shadow
+    @Final
+    private boolean slashOptional;
 
-    @Shadow public abstract void show(boolean narrateFirstSuggestion);
+    @Shadow
+    public abstract void show(boolean narrateFirstSuggestion);
 
-    @Shadow @Final private boolean slashOptional;
-
-    @Inject(method="refresh",at=@At("TAIL"),cancellable = true)
-    private void inject(CallbackInfo ci){
+    @Inject(method = "refresh", at = @At("TAIL"), cancellable = true)
+    private void inject(CallbackInfo ci) {
         String text = this.textField.getText();
         StringReader stringReader = new StringReader(text);
         boolean hasSlash = stringReader.canRead() && stringReader.peek() == '/';
@@ -45,10 +52,10 @@ public abstract class ChatInputSuggestorMixin {
         int cursor = this.textField.getCursor();
         if (!isCommand) {
             String textUptoCursor = text.substring(0, cursor);
-            int start = Math.max(getLastPattern(textUptoCursor, COLON_PATTERN)-1,0);
+            int start = Math.max(getLastPattern(textUptoCursor, COLON_PATTERN) - 1, 0);
             int whitespace = getLastPattern(textUptoCursor, WHITESPACE_PATTERN);
-            if(start < textUptoCursor.length() && start >= whitespace){
-                if(textUptoCursor.charAt(start) == ':') {
+            if (start < textUptoCursor.length() && start >= whitespace) {
+                if (textUptoCursor.charAt(start) == ':') {
                     this.pendingSuggestions = CommandSource.suggestMatching(EmojiTypeMod.emojiCodesCombined, new SuggestionsBuilder(textUptoCursor, start));
                     this.pendingSuggestions.thenRun(() -> {
                         if (!this.pendingSuggestions.isDone()) {
@@ -62,7 +69,7 @@ public abstract class ChatInputSuggestorMixin {
         }
     }
 
-    private int getLastPattern(String input, Pattern pattern){
+    private int getLastPattern(String input, Pattern pattern) {
         if (Strings.isNullOrEmpty(input)) {
             return 0;
         }

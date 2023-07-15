@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "emojitype",
+  "version": "${version}",
+  "name": "Emoji Type",
+  "description": "A mod that lets you type minecraft emojis easier!",
+  "license": "GPL-3.0",
+  "icon": "logo.png",
+  "authors": [
+    "CyborgCabbage",
+    "Norbiros"
+  ],
+
+  "contact": {
+    "homepage": "https://modrinth.com/mod/emoji-type",
+    "sources": "https://github.com/Norbiros/emojitype",
+    "issues": "https://github.com/Norbiros/emojitype/issues"
+  },
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.norbiros.emojitype.fabric.EmojiTypeFabric"
+    ],
+    "modmenu": [
+      "dev.norbiros.emojitype.fabric.ModMenuIntegration"
+    ]
+  },
+
+  "mixins": [
+    "emojitype.mixins.json",
+    "emojitype-common.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "minecraft": ">=1.20"
+  },
+  "suggests": {
+    "cloth-config2" : "*"
+  }
+}

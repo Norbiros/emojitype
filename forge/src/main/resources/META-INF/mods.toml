@@ -14,7 +14,7 @@ displayName = "Emoji Type"
 description='''
 A mod that lets you type minecraft emojis easier!
 '''
-#credits="Thanks to cyborgcabbage for original mod!"
+credits="Thanks to cyborgcabbage for original mod!"
 
 [[dependencies.emojitype]]
     modId="forge"
@@ -28,3 +28,9 @@ A mod that lets you type minecraft emojis easier!
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+[[dependencies.emojitype]]
+    modId = "cloth_config"
+    mandatory = false
+    versionRange = "[11.0.0,)"
+    ordering = "NONE"
+    side = "BOTH"

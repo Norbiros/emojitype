@@ -41,10 +41,16 @@ shadowJar {
     archiveClassifier.set("dev-shadow")
 }
 
+loom {
+    forge {
+        mixinConfig 'emojitype-common.mixins.json'
+    }
+}
+
 remapJar {
     inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
-    archiveClassifier.set(null)
+    archiveClassifier.set("forge")
 }
 
 jar {

@@ -18,39 +18,52 @@ public class EmojiType {
 			add(new EmojiCode(":hunger:", "\uD83C\uDF56"));
 			add(new EmojiCode(":hourglass2:", "⏳"));
 
-			//Face
+			// Face
 			add(new EmojiCode(":happy1:", "☺"));
 			add(new EmojiCode(":happy2:", "☻"));
 			add(new EmojiCode(":sad:", "☹"));
 			add(new EmojiCode(":skull:", "☠"));
-			//Tool
+
+			// Tool
 			add(new EmojiCode(":pickaxe:", "⛏"));
 			add(new EmojiCode(":axe:", "\uD83E\uDE93"));
 			add(new EmojiCode(":fishing:", "\uD83C\uDFA3"));
 			add(new EmojiCode(":umbrella:", "☂"));
-			//Combat
+
+			// Combat
 			add(new EmojiCode(":trident:", "\uD83D\uDD31"));
 			add(new EmojiCode(":sword:", "\uD83D\uDDE1"));
 			add(new EmojiCode(":shield:", "\uD83D\uDEE1"));
 			add(new EmojiCode(":duel:", "⚔"));
 			add(new EmojiCode(":bow:", "\uD83C\uDFF9"));
-			//Potion
+
+			// Potion
 			add(new EmojiCode(":potion:", "\uD83E\uDDEA"));
 			add(new EmojiCode(":splash:", "⚗"));
-			//Mark
+
+			// Mark
 			add(new EmojiCode(":copyright:", "©"));
 			add(new EmojiCode(":registered:", "®"));
 			add(new EmojiCode(":protected:", "℗"));
 			add(new EmojiCode(":trademark:", "™"));
-			//Water
+
+			// Globe
+			add(new EmojiCode(":globe:", "\uD83C\uDF0D"));
+			add(new EmojiCode(":globe2:", "\uD83C\uDF0E"));
+			add(new EmojiCode(":globe3:", "\uD83C\uDF0F"));
+			add(new EmojiCode(":globemeridians:", "\uD83C\uDF10"));
+
+			// Water
 			add(new EmojiCode(":anchor:", "⚓"));
 			add(new EmojiCode(":wave:", "\uD83C\uDF0A"));
 			add(new EmojiCode(":trademark:", "™"));
-			//Sex
+
+			// Sex
 			add(new EmojiCode(":male:", "♂"));
 			add(new EmojiCode(":female:", "♀"));
 			add(new EmojiCode(":intersex:", "⚥"));
-			//Direction
+
+			// Direction
 			add(new EmojiCode(":left:", "⏴"));
 			add(new EmojiCode(":right:", "⏵"));
 			add(new EmojiCode(":up:", "⏶"));
@@ -58,10 +71,12 @@ public class EmojiType {
 			add(new EmojiCode(":handleft:", "☜"));
 			add(new EmojiCode(":handright:", "☞"));
 			add(new EmojiCode(":swap:", "⇄"));
-			//Culture
+
+			// Culture
 			add(new EmojiCode(":yingyang:", "☯"));
 			add(new EmojiCode(":peace:", "☮"));
-			//Weather
+
+			// Weather
 			add(new EmojiCode(":sun:", "☀"));
 			add(new EmojiCode(":cloud:", "☁"));
 			add(new EmojiCode(":comet:", "☄"));
@@ -69,7 +84,8 @@ public class EmojiType {
 			add(new EmojiCode(":snowman:", "⛄"));
 			add(new EmojiCode(":storm:", "⛈"));
 			add(new EmojiCode(":snow:", "❄"));
-			//Control
+
+			// Control
 			add(new EmojiCode(":eject:", "⏏"));
 			add(new EmojiCode(":fastforward:", "⏩"));
 			add(new EmojiCode(":fastbackward:", "⏪"));
@@ -79,15 +95,18 @@ public class EmojiType {
 			add(new EmojiCode(":pause:", "⏸"));
 			add(new EmojiCode(":poweron:", "⏻"));
 			add(new EmojiCode(":poweroff:", "⏼"));
-			//Flag
+
+			// Flag
 			add(new EmojiCode(":blackflag:", "⚐"));
-			//Boolean
+
+			// Boolean
 			add(new EmojiCode(":box:", "☐"));
 			add(new EmojiCode(":boxyes:", "☑"));
 			add(new EmojiCode(":boxno:", "☒"));
 			add(new EmojiCode(":yes:", "✔"));
 			add(new EmojiCode(":no:", "✘"));
-			//Shape
+
+			// Shape
 			add(new EmojiCode(":square1:", "⏹"));
 			add(new EmojiCode(":square2:", "□"));
 			add(new EmojiCode(":circle1:", "⏺"));
@@ -105,7 +124,7 @@ public class EmojiType {
 			add(new EmojiCode(":star2:", "☆"));
 			add(new EmojiCode(":star3:", "⭐"));
 
-			//Misc
+			// Misc
 			add(new EmojiCode(":fire:", "\uD83D\uDD25"));
 			add(new EmojiCode(":unknown:", "�"));
 			add(new EmojiCode(":house:", "⌂"));
@@ -117,7 +136,7 @@ public class EmojiType {
 			add(new EmojiCode(":degree:", "°"));
 			add(new EmojiCode(":hourglass:", "⌛"));
 
-			//Cards
+			// Cards
 			add(new EmojiCode(":suitspade1:", "♠"));
 			add(new EmojiCode(":suitspade2:", "♤"));
 			add(new EmojiCode(":suitheart1:", "♥"));
@@ -126,22 +145,24 @@ public class EmojiType {
 			add(new EmojiCode(":suitclub2:", "♧"));
 			add(new EmojiCode(":suitdiamond1:", "♦"));
 			add(new EmojiCode(":suitdiamond2:", "♢"));
-			//Music
+
+			// Music
 			add(new EmojiCode(":note1:", "♩"));
 			add(new EmojiCode(":note2:", "♪"));
 			add(new EmojiCode(":note3:", "♫"));
 			add(new EmojiCode(":note4:", "♬"));
 			add(new EmojiCode(":flat:", "♭"));
 			add(new EmojiCode(":sharp:", "♮"));
-			//Dice
+
+			// Dice
 			add(new EmojiCode(":dice1:", "⚀"));
 			add(new EmojiCode(":dice2:", "⚁"));
 			add(new EmojiCode(":dice3:", "⚂"));
 			add(new EmojiCode(":dice4:", "⚃"));
 			add(new EmojiCode(":dice5:", "⚄"));
 			add(new EmojiCode(":dice6:", "⚅"));
-			//Additional symbols
-			//Shading
+
+			// Shading
 			add(new EmojiCode(":z0:", "▀"));
 			add(new EmojiCode(":z1:", "▄"));
 			add(new EmojiCode(":z2:", "█"));
@@ -150,7 +171,8 @@ public class EmojiType {
 			add(new EmojiCode(":z5:", "░"));
 			add(new EmojiCode(":z6:", "▒"));
 			add(new EmojiCode(":z7:", "▓"));
-			//Lowercase Letters
+
+			// Lowercase Letters
 			add(new EmojiCode(":za:", "ⓐ"));
 			add(new EmojiCode(":zb:", "ⓑ"));
 			add(new EmojiCode(":zc:", "ⓒ"));
@@ -177,7 +199,8 @@ public class EmojiType {
 			add(new EmojiCode(":zx:", "ⓧ"));
 			add(new EmojiCode(":zy:", "ⓨ"));
 			add(new EmojiCode(":zz:", "ⓩ"));
-			//Uppercase Letters
+
+			// Uppercase Letters
 			add(new EmojiCode(":za_:", "Ⓐ"));
 			add(new EmojiCode(":zb_:", "Ⓑ"));
 			add(new EmojiCode(":zc_:", "Ⓒ"));
@@ -204,7 +227,8 @@ public class EmojiType {
 			add(new EmojiCode(":zx_:", "Ⓧ"));
 			add(new EmojiCode(":zy_:", "Ⓨ"));
 			add(new EmojiCode(":zz_:", "Ⓩ"));
-			//Face
+
+			// Face
 			add(new EmojiCode(":face1:", "(°_°)"));
 			add(new EmojiCode(":face2:", "(ㆆ_ㆆ)"));
 			add(new EmojiCode(":face3:", "(O_O)"));
@@ -214,14 +238,16 @@ public class EmojiType {
 			add(new EmojiCode(":face7:", "(◠‿◠)"));
 			add(new EmojiCode(":face8:", "(✿◠‿◠)"));
 			add(new EmojiCode(":face9:", "(°o•)"));
-			//Animals
+
+			// Animals
 			add(new EmojiCode(":bear1:", "ʕ·ᴥ·ʔ"));
 			add(new EmojiCode(":bear2:", "ʕっ·ᴥ·ʔっ"));
 			add(new EmojiCode(":bear3:", "ʕ♥ᴥ♥ʔ"));
 			add(new EmojiCode(":bird:", "(°v°)"));
 			add(new EmojiCode(":cat:", "(°ᴥ°)"));
 			add(new EmojiCode(":dog:", "(◕ᴥ◕ʋ)"));
-			//Action
+
+			// Action
 			add(new EmojiCode(":cheer1:", "※\\(^o^)/※"));
 			add(new EmojiCode(":cheer2:", "*(^_^)*"));
 			add(new EmojiCode(":cool1:", "(⌐■_■)"));

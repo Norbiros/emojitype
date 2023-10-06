@@ -1,4 +1,9 @@
 # 🙂 Emoji Type
+
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/emoji-type?style=for-the-badge)](https://modrinth.com/mod/emoji-type)
+[![Modrinth Followers](https://img.shields.io/modrinth/followers/emoji-type?style=for-the-badge)](https://modrinth.com/mod/emoji-type)
+[![License](https://img.shields.io/badge/license-gpl-green.svg?style=for-the-badge)](https://opensource.org/license/gpl-3-0/)
+<br>
 Emoji Type is a Minecraft Fabric mod that allows you to easily enter emoji into text fields by typing a specific key word (e.g. `:skull:`).
 
 ### How it works?

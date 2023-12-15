@@ -1,0 +1,34 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "GPL-3.0"
+issueTrackerURL = "https://github.com/Norbiros/emojitype/issues"
+displayURL = "https://modrinth.com/mod/emoji-type"
+#updateJSONURL="https://api.modrinth.com/updates/emoji-type/forge_updates.json"
+logoFile = "logo.png"
+authors = "Cyborgcabbage,Norbiros"
+
+[[mods]]
+modId = "emojitype"
+version = "${version}"
+displayName = "Emoji Type"
+description='''
+A mod that lets you type minecraft emojis easier!
+'''
+credits="Thanks to cyborgcabbage for original mod!"
+
+[[mixins]]
+config = "emojitype-common.mixins.json"
+
+[[dependencies.emojitype]]
+    modId="neoforge"
+    mandatory=true
+    versionRange="[20.2,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.emojitype]]
+    modId = "cloth_config"
+    mandatory = false
+    versionRange = "[11.0.0,)"
+    ordering = "NONE"
+    side = "BOTH"

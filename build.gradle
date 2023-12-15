@@ -23,6 +23,10 @@ subprojects {
             it.mappings "dev.architectury:yarn-mappings-patch-forge:${project.yarn_mappings_patch}"
         }
     }
+
+    repositories {
+        maven { url "https://maven.neoforged.net/releases/" }
+    }
 }
 
 allprojects {

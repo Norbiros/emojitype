@@ -3,6 +3,7 @@ package dev.norbiros.emojitype.emoji;
 import java.util.Optional;
 
 public class EmojiCode {
+    public static EmojiCode EMPTY = new EmojiCode("::", "");
     public static String DELIMITER = ";";
     private final String code;
     private final String emoji;
@@ -43,10 +44,6 @@ public class EmojiCode {
     }
 
     public String toString() {
-        if (code.length() >= 3) {
-            return code.substring(1, code.length() - 1) + DELIMITER + emoji;
-        } else {
-            return code + DELIMITER + emoji;
-        }
+        return code.substring(1, code.length() - 1) + DELIMITER + emoji;
     }
 }

@@ -1,6 +1,9 @@
 {
   "config.emojitype.title": "Emoji Type Config",
-  "config.emojitype.category": "Emoji Type Category",
-  "config.emojitype.codes": "Emoji Codes",
+  "config.emojitype.cancel": "Cancel",
+  "config.emojitype.reset_all": "Reset config",
+  "config.emojitype.save_and_quit": "Save & Quit",
+  "config.emojitype.add_entry_below_tooltip": "Add below",
+  "config.emojitype.remove_entry_tooltip": "Remove",
   "modmenu.descriptionTranslation.emojitype": "A mod that lets you type minecraft emojis easier!"
 }

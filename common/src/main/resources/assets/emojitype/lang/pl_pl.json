@@ -1,6 +1,9 @@
 {
   "config.emojitype.title": "Konfiguracja Emoji Type",
-  "config.emojitype.category": "Kategoria Emoji Type",
-  "config.emojitype.codes": "Kody Emotikonów",
+  "config.emojitype.cancel": "Anuluj",
+  "config.emojitype.reset_all": "Zresetuj konfigurację",
+  "config.emojitype.save_and_quit": "Zapisz i wyjdź",
+  "config.emojitype.add_entry_below_tooltip": "Dodaj poniżej",
+  "config.emojitype.remove_entry_tooltip": "Usuń",
   "modmenu.descriptionTranslation.emojitype": "Mod ułatwiający wpisywanie emotek w Minecraft!"
 }

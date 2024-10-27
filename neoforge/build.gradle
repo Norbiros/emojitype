@@ -6,8 +6,6 @@ architectury {
 dependencies {
     neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
-
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 }

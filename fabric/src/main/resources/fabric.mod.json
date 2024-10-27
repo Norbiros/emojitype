@@ -37,7 +37,6 @@
     "minecraft": "${fabric_minecraft_version_range}"
   },
   "suggests": {
-    "cloth-config2" : "^${cloth_config_version}",
     "modmenu": "^${modmenu_version}"
   }
 }

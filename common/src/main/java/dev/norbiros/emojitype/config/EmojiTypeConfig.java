@@ -27,7 +27,6 @@ public class EmojiTypeConfig extends Screen {
         return new EmojiTypeConfig(parent);
     }
 
-    @Override
     protected void init() {
         this.layout.addHeader(this.title, this.textRenderer);
 
@@ -40,12 +39,11 @@ public class EmojiTypeConfig extends Screen {
         this.initFooter();
 
         this.layout.forEachChild(this::addDrawableChild);
-        this.initTabNavigation();
+        this.refreshWidgetPositions();
     }
 
 
-    @Override
-    protected void initTabNavigation() {
+    protected void refreshWidgetPositions() {
         this.layout.refreshPositions();
         if (this.body != null) {
             this.body.position(this.width, this.layout);

@@ -33,7 +33,6 @@ subprojects {
             fabric_minecraft_version_range : fabric_minecraft_version_range,
             neo_version_range              : neo_minecraft_version_range,
             fabric_loader_version          : fabric_loader_version,
-            cloth_config_version           : cloth_config_version,
             modmenu_version                : modmenu_version,
         ]
 
@@ -79,7 +78,7 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
-        // Architectury, Cloth Config
+        // Architectury
         maven { url "https://maven.shedaniel.me/" }
         // ModMenu
         maven { url "https://maven.terraformersmc.com/" }

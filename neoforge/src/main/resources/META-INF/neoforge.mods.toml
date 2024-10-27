@@ -26,10 +26,3 @@ type = "required"
 versionRange = "${neo_version_range}"
 ordering = "NONE"
 side = "BOTH"
-
-[[dependencies.emojitype]]
-modId = "cloth_config"
-type = "optional"
-versionRange = "[${cloth_config_version},)"
-ordering = "AFTER"
-side = "BOTH"

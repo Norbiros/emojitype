@@ -56,25 +56,16 @@ public class EmojiListWidget extends ElementListWidget<EmojiListWidget.EmojiWidg
             this.parent = parent;
             MinecraftClient client = MinecraftClient.getInstance();
 
-            var editBoxWidgetEmoji = new EditBoxWidget(client.textRenderer,
-                    entryWidth / 2 - 200,
-                    0,
-                    110,
-                    18,
-                    Text.empty(),
-                    Text.empty()
-            );
+            var editBoxWidgetEmoji = EditBoxWidget.builder()
+                    .x(entryWidth / 2 - 200)
+                    .build(client.textRenderer, 110, 18, Text.empty());
             editBoxWidgetEmoji.setText(emoji.getEmoji());
             this.elements.add(editBoxWidgetEmoji);
 
-            var editBoxWidgetCode = new EditBoxWidget(client.textRenderer,
-                    entryWidth / 2 - 85,
-                    0,
-                    235,
-                    18,
-                    Text.empty(),
-                    Text.empty()
-            );
+
+            var editBoxWidgetCode = EditBoxWidget.builder()
+                    .x(entryWidth / 2 - 85)
+                    .build(client.textRenderer, 235, 18, Text.empty());
             var emojiCode = emoji.getCode();
             editBoxWidgetCode.setText(emojiCode.substring(1, emojiCode.length() - 1));
             this.elements.add(editBoxWidgetCode);

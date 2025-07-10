@@ -35,5 +35,5 @@ jobs:
         with:
           name: build-artifacts
           path: |
-            src/fabric/build/libs/
-            src/neoforge/build/libs/
+            fabric/build/libs/
+            neoforge/build/libs/

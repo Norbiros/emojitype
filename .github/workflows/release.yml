@@ -35,8 +35,8 @@ jobs:
         with:
           name: ""
           files: |
-            src/fabric/build/libs/!(*-@(dev|shadow|sources|javadoc).jar)
-            src/fabric/build/libs/*-@(dev|sources|javadoc).jar
+            fabric/build/libs/!(*-@(dev|shadow|sources|javadoc).jar)
+            fabric/build/libs/*-@(dev|sources|javadoc).jar
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           github-token: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
@@ -46,8 +46,8 @@ jobs:
         with:
           name: ""
           files: |
-            src/neoforge/build/libs/!(*-@(dev|shadow|sources|javadoc).jar)
-            src/neoforge/build/libs/*-@(dev|sources|javadoc).jar
+            neoforge/build/libs/!(*-@(dev|shadow|sources|javadoc).jar)
+            neoforge/build/libs/*-@(dev|sources|javadoc).jar
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           github-token: ${{ secrets.PUBLISH_GITHUB_TOKEN }}

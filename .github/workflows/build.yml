@@ -1,38 +1,39 @@
-# Automatically build the project and run any configured tests for every push
-# and submitted pull request. This can help catch issues that only occur on
-# certain platforms or Java versions, and provides a first line of defence
-# against bad commits.
-
 name: build
-on: [pull_request, push, workflow_dispatch]
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "04 5 1 * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
 
-      - name: Setup JDK 21
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get required Java version
+        id: gradle-properties
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: gradle.properties
+          properties: java_version
+
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: 21
+          distribution: temurin
+          java-version: ${{ steps.gradle-properties.outputs.java_version }}
 
-      - name: Make Gradle Wrapper Executable
-        run: chmod +x ./gradlew
+      - name: Build artifacts
+        run: ./gradlew clean build --no-daemon
 
-      - name: build
-        run: ./gradlew build
-
-      - name: Upload Fabric Artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: fabric-artifacts
-          path: fabric/build/libs/
-
-      - name: Upload NeoForge Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: neoforge-artifacts
-          path: neoforge/build/libs/
+          name: build-artifacts
+          path: |
+            src/fabric/build/libs/
+            src/neoforge/build/libs/

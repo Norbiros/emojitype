@@ -20,7 +20,7 @@
   "environment": "client",
   "entrypoints": {
     "main": [
-      "dev.norbiros.emojitype.fabric.EmojiTypeFabric"
+      "dev.norbiros.emojitype.fabric.EmojiTypeImpl"
     ],
     "modmenu": [
       "dev.norbiros.emojitype.fabric.ModMenuIntegration"

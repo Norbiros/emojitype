@@ -3,9 +3,9 @@ package dev.norbiros.emojitype.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import dev.norbiros.emojitype.ConfigDirPlatform;
 import dev.norbiros.emojitype.EmojiType;
 import dev.norbiros.emojitype.emoji.EmojiCode;
+import dev.norbiros.emojitype.packs.EmojiPackManager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigUtil {
-    public static Path CONFIG_PATH = ConfigDirPlatform.getConfigDirectory().resolve(EmojiType.MOD_ID + ".json");
+    public static Path CONFIG_PATH = EmojiType.getConfigDirectory().resolve(EmojiType.MOD_ID + ".json");
     public static List<String> emojiCodeStrings = new ArrayList<>();
 
     public static void serialise() {
@@ -45,7 +45,7 @@ public class ConfigUtil {
         } else {
             // From defaults
             emojiCodeStrings.clear();
-            for (EmojiCode ec : EmojiType.DEFAULT_EMOJI_CODES) {
+            for (EmojiCode ec : EmojiPackManager.getAllEmojis()) {
                 emojiCodeStrings.add(ec.toString());
             }
             serialise();

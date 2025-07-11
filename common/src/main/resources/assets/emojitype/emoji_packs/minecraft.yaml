@@ -1,0 +1,164 @@
+name: Minecraft Emojis
+description: Various popular Minecraft emojis and symbols
+emojis:
+  # Tools
+  bucket: "🪣"
+  shears: "✂"
+  flag: "⚑"
+  bell: "🔔"
+  hunger: "🍖"
+
+  # Face
+  happy1: "☺"
+  happy2: "☻"
+  sad: "☹"
+  skull: "☠"
+
+  # Tool
+  pickaxe: "⛏"
+  axe: "🪓"
+  fishing: "🎣"
+  umbrella: "☂"
+
+  # Combat
+  trident: "🔱"
+  sword: "🗡"
+  shield: "🛡"
+  swords: "⚔"
+  bow: "🏹"
+
+  # Potion
+  potion: "🧪"
+  splash: "⚗"
+
+  # Mark
+  copyright: "©"
+  registered: "®"
+  protected: "℗"
+  trademark: "™"
+
+  # Globe
+  globe: "🌍"
+  globe2: "🌎"
+  globe3: "🌏"
+  globemeridians: "🌐"
+
+  # Water
+  anchor: "⚓"
+  wave: "🌊"
+
+  # Sex
+  male: "♂"
+  female: "♀"
+  intersex: "⚥"
+
+  # Direction
+  left: "⏴"
+  right: "⏵"
+  up: "⏶"
+  down: "⏷"
+  hand_left: "☜"
+  hand_right: "☞"
+  swap: "⇄"
+
+  # Culture
+  ying_yang: "☯"
+  peace: "☮"
+
+  # Weather
+  sun: "☀"
+  cloud: "☁"
+  comet: "☄"
+  moon: "☽"
+  snowman: "⛄"
+  snowman_snow: "☃"
+  storm: "⛈"
+  snowflake: "❄"
+  lightning: "⚡"
+
+  # Control
+  eject: "⏏"
+  fast_forward: "⏩"
+  fast_backward: "⏪"
+  to_end: "⏭"
+  to_start: "⏮"
+  play_pause: "⏯"
+  pause: "⏸"
+  power_on: "⏻"
+  power_off: "⏼"
+
+  # Flag
+  black_flag: "⚐"
+
+  # Boolean
+  box: "☐"
+  box_yes: "☑"
+  box_no: "☒"
+  yes: "✔"
+  no: "✘"
+
+  # Shape
+  square_solid: "⏹"
+  square: "□"
+  circle_solid: "⏺"
+  circle: "○"
+  cross: "❌"
+  heart: "❤"
+  heart_exclamation: "❣"
+  triangle_solid: "▲"
+  triangle: "△"
+  diamond_solid: "◆"
+  diamond: "◇"
+  looped_square: "⌘"
+  target: "◎"
+  star1: "★"
+  star2: "☆"
+  star3: "⭐"
+
+  # Misc
+  fire: "🔥"
+  unknown: "�"
+  house: "⌂"
+  clock: "⌚"
+  warning: "⚠"
+  envelope: "✉"
+  pencil: "✎"
+  degree: "°"
+  hourglass: "⌛"
+  hourglass_full: "⏳"
+
+  # Cards
+  suit_spade_solid: "♠"
+  suit_spade: "♤"
+  suit_heart_solid: "♥"
+  suit_heart: "♡"
+  suit_club_solid: "♣"
+  suit_club: "♧"
+  suit_diamond_solid: "♦"
+  suit_diamond2: "♢"
+
+  # Music
+  note_crotchet: "♩"
+  note_quaver: "♪"
+  note_quavers: "♫"
+  note_semiquavers: "♬"
+  note_flat: "♭"
+  note_neutral: "♮"
+
+  # Dice
+  dice1: "⚀"
+  dice2: "⚁"
+  dice3: "⚂"
+  dice4: "⚃"
+  dice5: "⚄"
+  dice6: "⚅"
+
+  # Shading
+  shade0: "▀"
+  shade1: "▄"
+  shade2: "█"
+  shade3: "▌"
+  shade4: "▐"
+  shade5: "░"
+  shade6: "▒"
+  shade7: "▓"

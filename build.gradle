@@ -24,16 +24,16 @@ subprojects {
 
     processResources {
         def resourceTargets = [
-            "fabric.mod.json",
-            "META-INF/neoforge.mods.toml",
+                "fabric.mod.json",
+                "META-INF/neoforge.mods.toml",
         ]
 
         def replaceProperties = [
-            version                        : mod_version,
-            fabric_minecraft_version_range : fabric_minecraft_version_range,
-            neo_version_range              : neo_minecraft_version_range,
-            fabric_loader_version          : fabric_loader_version,
-            modmenu_version                : modmenu_version,
+                version                       : mod_version,
+                fabric_minecraft_version_range: fabric_minecraft_version_range,
+                neo_version_range             : neo_minecraft_version_range,
+                fabric_loader_version         : fabric_loader_version,
+                modmenu_version               : modmenu_version,
         ]
 
         inputs.properties replaceProperties

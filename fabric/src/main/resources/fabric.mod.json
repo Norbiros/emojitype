@@ -10,13 +10,11 @@
     "CyborgCabbage",
     "Norbiros"
   ],
-
   "contact": {
     "homepage": "https://modrinth.com/mod/emoji-type",
     "sources": "https://github.com/Norbiros/emojitype",
     "issues": "https://github.com/Norbiros/emojitype/issues"
   },
-
   "environment": "client",
   "entrypoints": {
     "main": [
@@ -26,12 +24,10 @@
       "dev.norbiros.emojitype.fabric.ModMenuIntegration"
     ]
   },
-
   "mixins": [
     "emojitype.mixins.json",
     "emojitype-common.mixins.json"
   ],
-
   "depends": {
     "fabricloader": "^${fabric_loader_version}",
     "minecraft": "${fabric_minecraft_version_range}"

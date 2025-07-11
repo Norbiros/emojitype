@@ -2,6 +2,7 @@ package dev.norbiros.emojitype.config;
 
 import dev.norbiros.emojitype.EmojiType;
 import dev.norbiros.emojitype.emoji.EmojiCode;
+import dev.norbiros.emojitype.packs.EmojiPackManager;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
@@ -63,7 +64,7 @@ public class EmojiTypeConfig extends Screen {
                 return;
             }
             this.body.children().clear();
-            for (EmojiCode emoji : EmojiType.DEFAULT_EMOJI_CODES) {
+            for (EmojiCode emoji : EmojiPackManager.getAllEmojis()) {
                 this.body.addEntry(emoji);
             }
         }).width(100).build());

@@ -1,6 +1,5 @@
 package dev.norbiros.emojitype.packs;
 
-import com.google.gson.Gson;
 import dev.norbiros.emojitype.EmojiType;
 import dev.norbiros.emojitype.config.ConfigUtil;
 import dev.norbiros.emojitype.emoji.EmojiCode;
@@ -21,7 +20,7 @@ public class EmojiPackManager {
         List<EmojiCode> emojis = new ArrayList<>();
         for (EmojiPack pack : getEmojiPacks()) {
             for (Map.Entry<String, String> entry : pack.emojis.entrySet()) {
-                emojis.add(new EmojiCode(":" + entry.getKey()  + ":", entry.getValue()));
+                emojis.add(new EmojiCode(":" + entry.getKey() + ":", entry.getValue()));
             }
         }
         return emojis;

@@ -3,6 +3,7 @@ package dev.norbiros.emojitype.mixin;
 import dev.norbiros.emojitype.EmojiType;
 import dev.norbiros.emojitype.emoji.EmojiCode;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.CharInput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,7 +30,7 @@ public abstract class TextFieldWidgetMixin {
     protected abstract void onChanged(String newText);
 
     @Inject(method = "charTyped", at = @At("RETURN"))
-    private void inject(char chr, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void inject(CharInput input, CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue()) return;
 
         String result = getText();

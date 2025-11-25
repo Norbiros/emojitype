@@ -100,12 +100,12 @@ public class EmojiListWidget extends ElementListWidget<EmojiListWidget.EmojiWidg
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             for (ClickableWidget element : this.elements) {
                 if (element instanceof ButtonWidget) {
-                    element.setY(y - 1);
+                    element.setY(this.getY() - 1);
                 } else {
-                    element.setY(y);
+                    element.setY(this.getY());
                 }
                 element.render(context, mouseX, mouseY, tickDelta);
             }

@@ -50,7 +50,6 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
 
-        include 'org.yaml:snakeyaml:2.4'
         implementation 'org.yaml:snakeyaml:2.4'
 
         mappings loom.layered {

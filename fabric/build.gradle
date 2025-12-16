@@ -7,6 +7,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
+    include 'org.yaml:snakeyaml:2.4'
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }

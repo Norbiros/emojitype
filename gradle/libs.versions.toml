@@ -1,0 +1,31 @@
+# Find available versions on Linkie:
+# https://linkie.shedaniel.me/dependencies
+
+[versions]
+minecraft = "1.21.10"
+fabric-loader = "0.18.1"
+yarn-mappings = "1.21.10+build.3"
+neoforge = "21.10.55-beta"
+neoforge-yarn-mappings-patch = "1.21+build.6"
+modmenu = "16.0.0-rc.1"
+snakeyaml = "2.5"
+shadow = "8.3.5"
+architectury-plugin = "3.4-SNAPSHOT"
+architectury-loom = "1.10-SNAPSHOT"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
+neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
+
+# Mappings
+yarn-mappings = { module = "net.fabricmc:yarn", version.ref = "yarn-mappings" }
+neoforge-yarn-mappings-patch = { module = "dev.architectury:yarn-mappings-patch-neoforge", version.ref = "neoforge-yarn-mappings-patch" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+architectury = { id = "architectury-plugin", version.ref = "architectury-plugin" }
+architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+

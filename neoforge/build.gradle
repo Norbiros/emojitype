@@ -6,7 +6,7 @@ architectury {
 dependencies {
     neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 
-    include 'org.yaml:snakeyaml:2.4'
+    include 'org.yaml:snakeyaml:2.5'
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }

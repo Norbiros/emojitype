@@ -19,7 +19,7 @@ jobs:
         uses: christian-draeger/read-properties@1.1.1
         with:
           path: gradle.properties
-          properties: java_version
+          properties: java_version mod_version
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -35,8 +35,8 @@ jobs:
         with:
           name: ""
           files: |
-            fabric/build/libs/!(*-@(dev|shadow|sources|javadoc).jar)
-            fabric/build/libs/*-@(dev|sources|javadoc).jar
+            fabric/build/libs/!(*-@(dev|shadow|dev-shadow|sources|javadoc).jar)
+          version: ${{ steps.gradle-properties.outputs.mod_version }}-fabric
           modrinth-id: emoji-type
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: emoji-type
@@ -48,8 +48,8 @@ jobs:
         with:
           name: ""
           files: |
-            neoforge/build/libs/!(*-@(dev|shadow|sources|javadoc).jar)
-            neoforge/build/libs/*-@(dev|sources|javadoc).jar
+            neoforge/build/libs/!(*-@(dev|shadow|dev-shadow|sources|javadoc).jar)
+          version: ${{ steps.gradle-properties.outputs.mod_version }}-neoforge
           modrinth-id: emoji-type
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: emoji-type

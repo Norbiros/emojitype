@@ -19,8 +19,7 @@ and there is really nothing I can do about that.
 
 ### Special thanks
 
-- **[CyborgCabbage](https://github.com/CyborgCabbage/): Huge shoutout for creating this awesome mod in the first place!
-  **
+- **[CyborgCabbage](https://github.com/CyborgCabbage/): Huge shoutout for creating this awesome mod in the first place!**
 - LlamaLad7 from the Fabric Discord server: Thanks for helping CyborgCabbage with some mixin stuff!
 - [Juzz](https://github.com/Juuxel) from the Architectury Discord server: Thanks for helping with architectury!
 - [All the contributors](https://github.com/Norbiros/emojitype/graphs/contributors): A big thank you to everyone who has
@@ -28,5 +27,5 @@ and there is really nothing I can do about that.
 
 ### Links
 
-- [Mod on CurseForge](https://legacy.curseforge.com/minecraft/mc-mods/emoji-type)
 - [Mod on Modrinth](https://modrinth.com/mod/emoji-type)
+- [Mod on CurseForge](https://legacy.curseforge.com/minecraft/mc-mods/emoji-type) *(but please, use Modrinth instead)*

@@ -32,10 +32,10 @@ public abstract class SelectionManagerMixin {
     private Consumer<String> stringSetter;
 
     @Inject(method = "insert(Ljava/lang/String;Ljava/lang/String;)V", at = @At("TAIL"))
-    private void inject(String _unused, String insertion, CallbackInfo ci) {
+    private void onInsert(String _unused, String insertion, CallbackInfo callbackInfo) {
         String result = stringGetter.get();
-        for (EmojiCode emojiCode : EmojiType.emojiCodes) {
-            result = result.replace(emojiCode.getCode(), emojiCode.getEmoji());
+        for (EmojiCode emojiCode : EmojiType.getActiveEmojiCodes()) {
+            result = result.replace(emojiCode.getCodeWithColons(), emojiCode.getEmoji());
         }
 
         if (!Objects.equals(stringGetter.get(), result)) {

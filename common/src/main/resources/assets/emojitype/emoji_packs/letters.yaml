@@ -1,5 +1,6 @@
 name: Letter Emojis
 description: Enclosed alphabet letters as emoji codes
+type: bundled
 emojis:
   za: "ⓐ"
   zb: "ⓑ"

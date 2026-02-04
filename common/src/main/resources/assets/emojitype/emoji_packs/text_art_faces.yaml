@@ -1,5 +1,6 @@
 name: Text Art Faces
 description: Collection of expressive ASCII-style text emoticons
+type: bundled
 emojis:
   face_surprised: "(°_°)"
   face_skeptical: "(ㆆ_ㆆ)"

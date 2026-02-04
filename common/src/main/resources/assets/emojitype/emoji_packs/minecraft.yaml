@@ -9,8 +9,8 @@ emojis:
   hunger: "🍖"
 
   # Face
-  happy1: "☺"
-  happy2: "☻"
+  happy: "☺"
+  happy_filled: "☻"
   sad: "☹"
   skull: "☠"
 
@@ -41,7 +41,6 @@ emojis:
   globe: "🌍"
   globe2: "🌎"
   globe3: "🌏"
-  globemeridians: "🌐"
 
   # Water
   anchor: "⚓"

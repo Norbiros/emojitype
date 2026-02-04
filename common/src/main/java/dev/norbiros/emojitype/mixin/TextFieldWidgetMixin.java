@@ -30,12 +30,14 @@ public abstract class TextFieldWidgetMixin {
     protected abstract void onChanged(String newText);
 
     @Inject(method = "charTyped", at = @At("RETURN"))
-    private void inject(CharInput input, CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue()) return;
+    private void onCharTyped(CharInput input, CallbackInfoReturnable<Boolean> callbackInfo) {
+        if (!callbackInfo.getReturnValue()) {
+            return;
+        }
 
         String result = getText();
-        for (EmojiCode emojiCode : EmojiType.emojiCodes) {
-            result = result.replace(emojiCode.getCode(), emojiCode.getEmoji());
+        for (EmojiCode emojiCode : EmojiType.getActiveEmojiCodes()) {
+            result = result.replace(emojiCode.getCodeWithColons(), emojiCode.getEmoji());
         }
 
         if (!Objects.equals(this.text, result)) {

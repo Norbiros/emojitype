@@ -55,7 +55,7 @@ public abstract class ChatInputSuggestorMixin {
             int whitespace = getLastPattern(textUptoCursor, WHITESPACE_PATTERN);
             if (start < textUptoCursor.length() && start >= whitespace) {
                 if (textUptoCursor.charAt(start) == ':') {
-                    this.pendingSuggestions = CommandSource.suggestMatching(EmojiType.emojiCodesCombined, new SuggestionsBuilder(textUptoCursor, start));
+                    this.pendingSuggestions = CommandSource.suggestMatching(EmojiType.getChatSuggestions(), new SuggestionsBuilder(textUptoCursor, start));
                     this.pendingSuggestions.thenRun(() -> {
                         if (!this.pendingSuggestions.isDone()) {
                             return;

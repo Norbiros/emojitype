@@ -1,7 +1,7 @@
 package dev.norbiros.emojitype.neoforge;
 
 import dev.norbiros.emojitype.EmojiType;
-import dev.norbiros.emojitype.config.EmojiTypeConfig;
+import dev.norbiros.emojitype.config.ui.EmojiTypeConfig;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLPaths;

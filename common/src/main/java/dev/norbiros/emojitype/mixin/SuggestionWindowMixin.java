@@ -20,25 +20,37 @@ public abstract class SuggestionWindowMixin {
     @Shadow
     @Final
     ChatInputSuggestor field_21615;
+
     @Shadow
     private int selection;
+
     @Shadow
     @Final
     private List<Suggestion> suggestions;
 
     @Inject(method = "complete", at = @At("TAIL"))
-    private void overwriteComplete(CallbackInfo ci) {
+    private void onComplete(CallbackInfo callbackInfo) {
         ChatInputSuggestorAccessor inputSuggestor = (ChatInputSuggestorAccessor) this.field_21615;
-        if (inputSuggestor == null) return;
+        if (inputSuggestor == null) {
+            return;
+        }
+        
+        if (this.suggestions == null || this.suggestions.isEmpty()) {
+            return;
+        }
+        if (this.selection < 0 || this.selection >= this.suggestions.size()) {
+            return;
+        }
+        
         TextFieldWidget textFieldWidget = inputSuggestor.getTextField();
         Suggestion suggestion = this.suggestions.get(this.selection);
-        int just = suggestion.getRange().getStart() + suggestion.getText().length() - 2;
-        for (EmojiCode ec : EmojiType.emojiCodes) {
-            int justTyped = just - ec.getEmoji().length();
-            if (ec.match(textFieldWidget.getText(), justTyped)) {
-                textFieldWidget.eraseCharacters(-ec.getCode().length() - (1 + ec.getEmoji().length()));
+
+        for (EmojiCode emojiCode : EmojiType.getActiveEmojiCodes()) {
+            if (suggestion.getText().equals(emojiCode.getChatSuggestion())) {
+                int suggestionLength = emojiCode.getChatSuggestion().length();
+                textFieldWidget.eraseCharacters(-suggestionLength);
                 textFieldWidget.setSelectionEnd(textFieldWidget.getCursor());
-                textFieldWidget.write(ec.getEmoji());
+                textFieldWidget.write(emojiCode.getEmoji());
                 break;
             }
         }

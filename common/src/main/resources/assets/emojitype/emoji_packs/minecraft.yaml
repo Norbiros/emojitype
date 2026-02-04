@@ -1,5 +1,6 @@
 name: Minecraft Emojis
 description: Various popular Minecraft emojis and symbols
+type: bundled
 emojis:
   # Tools
   bucket: "🪣"

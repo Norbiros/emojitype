@@ -1,43 +1,41 @@
-architectury {
-    platformSetupLoomIde()
-    fabric()
+plugins {
+    alias(libs.plugins.fabric.loom)
 }
 
-val commonConfig = configurations.getByName("common")
-val shadowCommonConfig = configurations.getByName("shadowCommon")
-val developmentFabricConfig = configurations.getByName("developmentFabric")
-
-configurations {
-    compileClasspath.get().extendsFrom(commonConfig)
-    runtimeClasspath.get().extendsFrom(commonConfig)
-    developmentFabricConfig.extendsFrom(commonConfig)
+sourceSets {
+    main {
+        java.srcDir(rootProject.file("common/src/main/java"))
+        java.exclude(
+            "dev/norbiros/emojitype/config/ui/ConfirmationDialog.java",
+            "dev/norbiros/emojitype/config/ui/EmojiListWidget.java",
+            "dev/norbiros/emojitype/config/ui/PackEditorScreen.java",
+            "dev/norbiros/emojitype/config/ui/PackListWidget.java",
+            "dev/norbiros/emojitype/config/ui/PackPropertiesDialog.java",
+            "dev/norbiros/emojitype/config/ui/UIColors.java",
+        )
+        resources.srcDir(rootProject.file("common/src/main/resources"))
+    }
 }
 
 dependencies {
-    "modImplementation"(libs.fabric.loader)
-    "modApi"(libs.modmenu)
-
+    add("minecraft", libs.minecraft)
+    implementation(libs.fabric.loader)
+    implementation(libs.modmenu)
+    implementation(libs.snakeyaml)
     include(libs.snakeyaml)
-
-    common(project(path = ":common", configuration = "namedElements")) { isTransitive = false }
-    shadowCommon(project(path = ":common", configuration = "transformProductionFabric")) { isTransitive = false }
 }
 
-tasks.remapJar {
-    inputFile.set(tasks.shadowJar.get().archiveFile)
-    dependsOn(tasks.shadowJar)
-    archiveClassifier.set("fabric")
-}
+tasks.processResources {
+    val replaceProperties = mapOf(
+        "version" to project.property("mod_version"),
+        "fabric_minecraft_version_range" to project.property("fabric_minecraft_version_range"),
+        "fabric_loader_version" to libs.versions.fabric.loader.get(),
+        "modmenu_version" to libs.versions.modmenu.get(),
+    )
 
-tasks.sourcesJar {
-    val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
-    dependsOn(commonSources)
-    from(commonSources.archiveFile.map { zipTree(it) })
-}
-
-components.getByName<AdhocComponentWithVariants>("java") {
-    withVariantsFromConfiguration(configurations["shadowRuntimeElements"]) {
-        skip()
+    inputs.properties(replaceProperties)
+    filesMatching("fabric.mod.json") {
+        expand(replaceProperties)
     }
 }
 

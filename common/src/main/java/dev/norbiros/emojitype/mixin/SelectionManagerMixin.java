@@ -2,7 +2,7 @@ package dev.norbiros.emojitype.mixin;
 
 import dev.norbiros.emojitype.EmojiType;
 import dev.norbiros.emojitype.emoji.EmojiCode;
-import net.minecraft.client.util.SelectionManager;
+import net.minecraft.client.gui.font.TextFieldHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,36 +14,36 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Mixin(SelectionManager.class)
+@Mixin(TextFieldHelper.class)
 public abstract class SelectionManagerMixin {
 
     @Shadow
-    private int selectionStart;
+    private int cursorPos;
 
     @Shadow
-    private int selectionEnd;
-
-    @Shadow
-    @Final
-    private Supplier<String> stringGetter;
+    private int selectionPos;
 
     @Shadow
     @Final
-    private Consumer<String> stringSetter;
+    private Supplier<String> getMessageFn;
+
+    @Shadow
+    @Final
+    private Consumer<String> setMessageFn;
 
     @Inject(method = "insert(Ljava/lang/String;Ljava/lang/String;)V", at = @At("TAIL"))
     private void onInsert(String _unused, String insertion, CallbackInfo callbackInfo) {
-        String result = stringGetter.get();
+        String result = getMessageFn.get();
         for (EmojiCode emojiCode : EmojiType.getActiveEmojiCodes()) {
             result = result.replace(emojiCode.getCodeWithColons(), emojiCode.getEmoji());
         }
 
-        if (!Objects.equals(stringGetter.get(), result)) {
-            int lengthDifference = stringGetter.get().length() - result.length();
-            int newCursorPosition = Math.max(Math.min(this.selectionEnd - lengthDifference + 1, result.length()), 0);
-            this.selectionEnd = this.selectionStart = newCursorPosition;
+        if (!Objects.equals(getMessageFn.get(), result)) {
+            int lengthDifference = getMessageFn.get().length() - result.length();
+            int newCursorPosition = Math.max(Math.min(this.selectionPos - lengthDifference + 1, result.length()), 0);
+            this.selectionPos = this.cursorPos = newCursorPosition;
         }
 
-        stringSetter.accept(result);
+        setMessageFn.accept(result);
     }
 }

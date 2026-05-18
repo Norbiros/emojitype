@@ -1,10 +1,10 @@
 package dev.norbiros.emojitype;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.norbiros.emojitype.config.ConfigManager;
 import dev.norbiros.emojitype.emoji.EmojiCode;
 import dev.norbiros.emojitype.packs.PackLoader;
 import dev.norbiros.emojitype.packs.types.EmojiPack;
+import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
@@ -103,10 +103,8 @@ public class EmojiType {
         return config.enabledPacks.contains(packName);
     }
 
-    @ExpectPlatform
     @Contract(value = "-> _", pure = true)
     public static Path getConfigDirectory() {
-        //noinspection Contract
-        throw new AssertionError("Missing implementation of EmojiType.getConfigDirectory()");
+        return FabricLoader.getInstance().getConfigDir();
     }
 }

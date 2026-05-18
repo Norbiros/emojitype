@@ -2,16 +2,13 @@
 # https://linkie.shedaniel.me/dependencies
 
 [versions]
-minecraft = "1.21.10"
-fabric-loader = "0.18.1"
-yarn-mappings = "1.21.10+build.3"
+minecraft = "26.1.2"
+fabric-loader = "0.19.2"
 neoforge = "21.10.55-beta"
 neoforge-yarn-mappings-patch = "1.21+build.6"
-modmenu = "16.0.0-rc.1"
+modmenu = "18.0.0-alpha.8"
 snakeyaml = "2.5"
-shadow = "8.3.5"
-architectury-plugin = "3.4-SNAPSHOT"
-architectury-loom = "1.10-SNAPSHOT"
+fabric-loom = "1.16-SNAPSHOT"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -20,12 +17,6 @@ fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-l
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
 
-# Mappings
-yarn-mappings = { module = "net.fabricmc:yarn", version.ref = "yarn-mappings" }
-neoforge-yarn-mappings-patch = { module = "dev.architectury:yarn-mappings-patch-neoforge", version.ref = "neoforge-yarn-mappings-patch" }
-
 [plugins]
-shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
-architectury = { id = "architectury-plugin", version.ref = "architectury-plugin" }
-architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+fabric-loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric-loom" }
 

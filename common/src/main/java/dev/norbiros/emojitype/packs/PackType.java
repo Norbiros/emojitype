@@ -1,6 +1,6 @@
 package dev.norbiros.emojitype.packs;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public enum PackType {
     BUNDLED("bundled"),
@@ -30,8 +30,8 @@ public enum PackType {
         return id;
     }
 
-    public Text getTranslatedLabel() {
-        return Text.translatable("config.emojitype.pack_type." + id);
+    public Component getTranslatedLabel() {
+        return Component.translatable("config.emojitype.pack_type." + id);
     }
 
     @Override

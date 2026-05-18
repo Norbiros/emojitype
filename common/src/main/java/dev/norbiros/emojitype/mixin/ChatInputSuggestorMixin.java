@@ -5,9 +5,9 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.norbiros.emojitype.EmojiType;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.command.CommandSource;
+import net.minecraft.client.gui.components.CommandSuggestions;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.commands.SharedSuggestionProvider;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,47 +20,48 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Mixin(ChatInputSuggestor.class)
+@Mixin(CommandSuggestions.class)
 public abstract class ChatInputSuggestorMixin {
     private static final Pattern COLON_PATTERN = Pattern.compile("(:)");
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("(\\s+)");
 
     @Shadow
     @Final
-    TextFieldWidget textField;
+    private EditBox input;
 
     @Shadow
     @Nullable
     private CompletableFuture<Suggestions> pendingSuggestions;
+
     @Shadow
     @Final
-    private boolean slashOptional;
+    private boolean commandsOnly;
 
     @Shadow
-    public abstract void show(boolean narrateFirstSuggestion);
+    public abstract void showSuggestions(boolean narrateFirstSuggestion);
 
-    @Inject(method = "refresh", at = @At("TAIL"), cancellable = true)
+    @Inject(method = "updateCommandInfo", at = @At("TAIL"), cancellable = true)
     private void inject(CallbackInfo ci) {
-        String text = this.textField.getText();
+        String text = this.input.getValue();
         StringReader stringReader = new StringReader(text);
         boolean hasSlash = stringReader.canRead() && stringReader.peek() == '/';
         if (hasSlash) {
             stringReader.skip();
         }
-        boolean isCommand = this.slashOptional || hasSlash;
-        int cursor = this.textField.getCursor();
+        boolean isCommand = this.commandsOnly || hasSlash;
+        int cursor = this.input.getCursorPosition();
         if (!isCommand) {
             String textUptoCursor = text.substring(0, cursor);
             int start = Math.max(getLastPattern(textUptoCursor, COLON_PATTERN) - 1, 0);
             int whitespace = getLastPattern(textUptoCursor, WHITESPACE_PATTERN);
             if (start < textUptoCursor.length() && start >= whitespace) {
                 if (textUptoCursor.charAt(start) == ':') {
-                    this.pendingSuggestions = CommandSource.suggestMatching(EmojiType.getChatSuggestions(), new SuggestionsBuilder(textUptoCursor, start));
+                    this.pendingSuggestions = SharedSuggestionProvider.suggest(EmojiType.getChatSuggestions(), new SuggestionsBuilder(textUptoCursor, start));
                     this.pendingSuggestions.thenRun(() -> {
                         if (!this.pendingSuggestions.isDone()) {
                             return;
                         }
-                        this.show(false);
+                        this.showSuggestions(false);
                     });
                     ci.cancel();
                 }

@@ -3,8 +3,8 @@ package dev.norbiros.emojitype.mixin;
 import com.mojang.brigadier.suggestion.Suggestion;
 import dev.norbiros.emojitype.EmojiType;
 import dev.norbiros.emojitype.emoji.EmojiCode;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.components.CommandSuggestions;
+import net.minecraft.client.gui.components.EditBox;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,43 +14,37 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(ChatInputSuggestor.SuggestionWindow.class)
+@Mixin(CommandSuggestions.SuggestionsList.class)
 public abstract class SuggestionWindowMixin {
 
     @Shadow
     @Final
-    ChatInputSuggestor field_21615;
+    CommandSuggestions this$0;
 
     @Shadow
-    private int selection;
+    private int current;
 
     @Shadow
     @Final
-    private List<Suggestion> suggestions;
+    private List<Suggestion> suggestionList;
 
-    @Inject(method = "complete", at = @At("TAIL"))
+    @Inject(method = "useSuggestion", at = @At("TAIL"))
     private void onComplete(CallbackInfo callbackInfo) {
-        ChatInputSuggestorAccessor inputSuggestor = (ChatInputSuggestorAccessor) this.field_21615;
-        if (inputSuggestor == null) {
+        if (this.suggestionList == null || this.suggestionList.isEmpty()) {
             return;
         }
-        
-        if (this.suggestions == null || this.suggestions.isEmpty()) {
+        if (this.current < 0 || this.current >= this.suggestionList.size()) {
             return;
         }
-        if (this.selection < 0 || this.selection >= this.suggestions.size()) {
-            return;
-        }
-        
-        TextFieldWidget textFieldWidget = inputSuggestor.getTextField();
-        Suggestion suggestion = this.suggestions.get(this.selection);
+
+        EditBox input = ((ChatInputSuggestorAccessor) this.this$0).emojitype$getInput();
+        Suggestion suggestion = this.suggestionList.get(this.current);
 
         for (EmojiCode emojiCode : EmojiType.getActiveEmojiCodes()) {
             if (suggestion.getText().equals(emojiCode.getChatSuggestion())) {
-                int suggestionLength = emojiCode.getChatSuggestion().length();
-                textFieldWidget.eraseCharacters(-suggestionLength);
-                textFieldWidget.setSelectionEnd(textFieldWidget.getCursor());
-                textFieldWidget.write(emojiCode.getEmoji());
+                String value = input.getValue().replace(emojiCode.getChatSuggestion(), emojiCode.getEmoji());
+                input.setValue(value);
+                input.setCursorPosition(Math.min(input.getCursorPosition(), value.length()));
                 break;
             }
         }

@@ -31,7 +31,7 @@ public abstract class SelectionManagerMixin {
     @Final
     private Consumer<String> setMessageFn;
 
-    @Inject(method = "insert(Ljava/lang/String;Ljava/lang/String;)V", at = @At("TAIL"))
+    @Inject(method = "insertText(Ljava/lang/String;Ljava/lang/String;)V", at = @At("TAIL"))
     private void onInsert(String _unused, String insertion, CallbackInfo callbackInfo) {
         String result = getMessageFn.get();
         for (EmojiCode emojiCode : EmojiType.getActiveEmojiCodes()) {

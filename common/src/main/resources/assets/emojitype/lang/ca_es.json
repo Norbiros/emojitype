@@ -1,0 +1,9 @@
+{
+  "config.emojitype.title": "Configuració d'Emoji Type",
+  "config.emojitype.cancel": "Cancel·la",
+  "config.emojitype.reset_all": "Restableix la configuració",
+  "config.emojitype.save_and_quit": "Desa i surt",
+  "config.emojitype.add_entry_below_tooltip": "Afegeix a sota",
+  "config.emojitype.remove_entry_tooltip": "Elimina",
+  "modmenu.descriptionTranslation.emojitype": "Un mod que et permet escriure emoticones de Minecraft més fàcilment!"
+}

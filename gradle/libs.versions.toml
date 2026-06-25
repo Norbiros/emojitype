@@ -10,6 +10,7 @@ snakeyaml = "2.5"
 shadow = "8.3.5"
 architectury-plugin = "3.5.169"
 architectury-loom = "1.17.487"
+mod-publish-plugin = "2.1.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -22,3 +23,4 @@ neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 architectury = { id = "architectury-plugin", version.ref = "architectury-plugin" }
 architectury-loom = { id = "dev.architectury.loom-no-remap", version.ref = "architectury-loom" }
+mod-publish-plugin = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod-publish-plugin" }

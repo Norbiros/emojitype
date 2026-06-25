@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.shadow) apply false
     alias(libs.plugins.architectury)
     alias(libs.plugins.architectury.loom) apply false
+    alias(libs.plugins.mod.publish.plugin)
 }
 
 architectury {
@@ -96,5 +97,52 @@ allprojects {
 
     configure<JavaPluginExtension> {
         withSourcesJar()
+    }
+}
+
+publishMods {
+    changelog = providers.environmentVariable("CHANGELOG").orElse("")
+    type = STABLE
+
+    val fabricJar = project(":fabric").tasks.named<Jar>("shadowJar")
+    val neoforgeJar = project(":neoforge").tasks.named<Jar>("shadowJar")
+    val mcVersion = libs.versions.minecraft.get()
+
+    val modrinthOptions = modrinthOptions {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        projectId = "q7vRRpxU"
+        minecraftVersions.add(mcVersion)
+    }
+
+    modrinth("modrinthFabric") {
+        from(modrinthOptions)
+        file = fabricJar.flatMap { it.archiveFile }
+        modLoaders.add("fabric")
+    }
+
+    modrinth("modrinthNeoForge") {
+        from(modrinthOptions)
+        file = neoforgeJar.flatMap { it.archiveFile }
+        modLoaders.add("neoforge")
+    }
+
+    val curseforgeOptions = curseforgeOptions {
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        projectId = "574752"
+        minecraftVersions.add(mcVersion)
+        client = true
+        server = true
+    }
+
+    curseforge("curseforgeFabric") {
+        from(curseforgeOptions)
+        file = fabricJar.flatMap { it.archiveFile }
+        modLoaders.add("fabric")
+    }
+
+    curseforge("curseforgeNeoForge") {
+        from(curseforgeOptions)
+        file = neoforgeJar.flatMap { it.archiveFile }
+        modLoaders.add("neoforge")
     }
 }

@@ -1,23 +1,23 @@
 package dev.norbiros.emojitype.config.ui;
 
 import dev.norbiros.emojitype.emoji.EmojiCode;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.EditBoxWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmojiListWidget extends ElementListWidget<EmojiListWidget.EmojiWidgetEntry> {
+public class EmojiListWidget extends ContainerObjectSelectionList<EmojiListWidget.EmojiWidgetEntry> {
 
-    public EmojiListWidget(MinecraftClient client, int width, int height, int top, int itemHeight) {
+    public EmojiListWidget(Minecraft client, int width, int height, int top, int itemHeight) {
         super(client, width, height, top, itemHeight);
     }
 
@@ -71,15 +71,15 @@ public class EmojiListWidget extends ElementListWidget<EmojiListWidget.EmojiWidg
     }
 
     public int getItemHeightValue() {
-        return this.itemHeight;
+        return this.defaultEntryHeight;
     }
 
     @Override
-    protected int getScrollbarX() {
+    protected int scrollBarX() {
         return width - 12;
     }
 
-    public static class EmojiWidgetEntry extends ElementListWidget.Entry<EmojiWidgetEntry> {
+    public static class EmojiWidgetEntry extends ContainerObjectSelectionList.Entry<EmojiWidgetEntry> {
         private static final int LEFT_PADDING = 6;
         private static final int GAP = 4;
         private static final int BUTTON_SIZE = 20;
@@ -87,63 +87,61 @@ public class EmojiListWidget extends ElementListWidget<EmojiListWidget.EmojiWidg
         private static final int BUTTONS_WIDTH = 44;
 
         private final EmojiListWidget parentWidget;
-        private final List<ClickableWidget> elements = new ArrayList<>();
-        private final EditBoxWidget emojiField;
-        private final EditBoxWidget codeField;
-        private final ButtonWidget addButton;
-        private final ButtonWidget removeButton;
+        private final List<AbstractWidget> elements = new ArrayList<>();
+        private final EditBox emojiField;
+        private final EditBox codeField;
+        private final Button addButton;
+        private final Button removeButton;
 
         public EmojiWidgetEntry(int entryWidth, EmojiCode emojiCode, EmojiListWidget parentWidget) {
             this.parentWidget = parentWidget;
-            MinecraftClient client = MinecraftClient.getInstance();
+            Minecraft client = Minecraft.getInstance();
 
             int available = Math.max(120, entryWidth - LEFT_PADDING - BUTTONS_WIDTH - GAP);
             int emojiWidth = Math.min(80, Math.max(40, available / 4));
             int codeWidth = Math.max(80, available - emojiWidth);
 
-            this.emojiField = EditBoxWidget.builder()
-                    .x(0)
-                    .placeholder(Text.translatable("config.emojitype.emoji_placeholder"))
-                    .build(client.textRenderer, emojiWidth, FIELD_HEIGHT, Text.empty());
-            this.emojiField.setText(emojiCode.getEmoji());
+            this.emojiField = new EditBox(client.font, 0, 0, emojiWidth, FIELD_HEIGHT, Component.empty());
+            this.emojiField.setHint(Component.translatable("config.emojitype.emoji_placeholder"));
+            this.emojiField.setValue(emojiCode.getEmoji());
             this.elements.add(emojiField);
 
-            this.codeField = EditBoxWidget.builder()
-                    .x(0)
-                    .placeholder(Text.translatable("config.emojitype.code_placeholder"))
-                    .build(client.textRenderer, codeWidth, FIELD_HEIGHT, Text.empty());
-            this.codeField.setText(emojiCode.getCode());
+            this.codeField = new EditBox(client.font, 0, 0, codeWidth, FIELD_HEIGHT, Component.empty());
+            this.codeField.setHint(Component.translatable("config.emojitype.code_placeholder"));
+            this.codeField.setValue(emojiCode.getCode());
             this.elements.add(codeField);
 
-            this.addButton = ButtonWidget
-                    .builder(Text.literal("+"), button -> this.parentWidget.addEntryAfter(new EmojiCode("", ""), this))
-                    .dimensions(0, 0, BUTTON_SIZE, BUTTON_SIZE)
-                    .tooltip(Tooltip.of(Text.translatable("config.emojitype.add_entry_below_tooltip")))
+            this.addButton = Button
+                    .builder(Component.literal("+"), button -> this.parentWidget.addEntryAfter(new EmojiCode("", ""), this))
+                    .bounds(0, 0, BUTTON_SIZE, BUTTON_SIZE)
+                    .tooltip(Tooltip.create(Component.translatable("config.emojitype.add_entry_below_tooltip")))
                     .build();
             this.elements.add(addButton);
 
-            this.removeButton = ButtonWidget
-                    .builder(Text.literal("-"), button -> this.parentWidget.removeEntry(this))
-                    .dimensions(0, 0, BUTTON_SIZE, BUTTON_SIZE)
-                    .tooltip(Tooltip.of(Text.translatable("config.emojitype.remove_entry_tooltip")))
+            this.removeButton = Button
+                    .builder(Component.literal("-"), button -> this.parentWidget.removeEntry(this))
+                    .bounds(0, 0, BUTTON_SIZE, BUTTON_SIZE)
+                    .tooltip(Tooltip.create(Component.translatable("config.emojitype.remove_entry_tooltip")))
                     .build();
             this.elements.add(removeButton);
         }
 
         public EmojiCode getEmojiCode() {
-            return new EmojiCode(codeField.getText(), emojiField.getText());
+            return new EmojiCode(codeField.getValue(), emojiField.getValue());
         }
 
-        public List<? extends Element> children() {
-            return this.elements;
-        }
-
-        public List<? extends Selectable> selectableChildren() {
+        @Override
+        public List<? extends GuiEventListener> children() {
             return this.elements;
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public List<? extends NarratableEntry> narratables() {
+            return this.elements;
+        }
+
+        @Override
+        public void extractContent(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int rowX = this.getX();
             int rowY = this.getY();
             int rowWidth = this.parentWidget.getRowWidth();
@@ -157,7 +155,7 @@ public class EmojiListWidget extends ElementListWidget<EmojiListWidget.EmojiWidg
             int addX = removeX - GAP - BUTTON_SIZE;
 
             int fieldsWidth = Math.max(0, addX - GAP - (rowX + LEFT_PADDING));
-            int emojiWidth = Math.min(emojiField.getWidth(), Math.max(40, fieldsWidth / 4));
+            int emojiWidth = Math.clamp(fieldsWidth / 4, 40, emojiField.getWidth());
             int codeWidth = Math.max(40, fieldsWidth - emojiWidth - GAP);
 
             int emojiX = rowX + LEFT_PADDING;
@@ -180,10 +178,10 @@ public class EmojiListWidget extends ElementListWidget<EmojiListWidget.EmojiWidg
             removeButton.setX(removeX);
             removeButton.setY(rowY + Math.max(0, (rowHeight - BUTTON_SIZE) / 2));
 
-            emojiField.render(context, mouseX, mouseY, tickDelta);
-            codeField.render(context, mouseX, mouseY, tickDelta);
-            addButton.render(context, mouseX, mouseY, tickDelta);
-            removeButton.render(context, mouseX, mouseY, tickDelta);
+            emojiField.extractRenderState(context, mouseX, mouseY, tickDelta);
+            codeField.extractRenderState(context, mouseX, mouseY, tickDelta);
+            addButton.extractRenderState(context, mouseX, mouseY, tickDelta);
+            removeButton.extractRenderState(context, mouseX, mouseY, tickDelta);
         }
     }
 }

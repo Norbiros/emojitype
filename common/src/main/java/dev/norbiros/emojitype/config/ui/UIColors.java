@@ -1,7 +1,7 @@
 package dev.norbiros.emojitype.config.ui;
 
 import dev.norbiros.emojitype.packs.PackType;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class UIColors {
 
@@ -63,21 +63,21 @@ public final class UIColors {
         return (index % 2 == 0) ? PACK_ROW_EVEN_BACKGROUND : PACK_ROW_ODD_BACKGROUND;
     }
 
-    public static void drawRowBackground(DrawContext context, int x, int y, int width, int height, int index, boolean hovered) {
+    public static void drawRowBackground(GuiGraphicsExtractor context, int x, int y, int width, int height, int index, boolean hovered) {
         context.fill(x, y, x + width, y + height, getRowBackground(index));
         if (hovered) {
             context.fill(x, y, x + width, y + height, ROW_HOVER_OVERLAY);
         }
     }
 
-    public static void drawPackRowBackground(DrawContext context, int x, int y, int width, int height, int index, boolean hovered) {
+    public static void drawPackRowBackground(GuiGraphicsExtractor context, int x, int y, int width, int height, int index, boolean hovered) {
         context.fill(x, y, x + width, y + height, getPackRowBackground(index));
         if (hovered) {
             context.fill(x, y, x + width, y + height, PACK_ROW_HOVER_OVERLAY);
         }
     }
 
-    public static void drawBadge(DrawContext context, int x, int y, int width, int height, PackType packType) {
+    public static void drawBadge(GuiGraphicsExtractor context, int x, int y, int width, int height, PackType packType) {
         int backgroundColor = getBadgeBackground(packType);
         int borderColor = getBadgeBorder(packType);
 

@@ -1,12 +1,12 @@
 package dev.norbiros.emojitype.config.ui;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.EditBoxWidget;
-import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 public class PackPropertiesDialog extends Screen {
@@ -14,7 +14,7 @@ public class PackPropertiesDialog extends Screen {
     private static final int FIELD_HEIGHT = 18;
     private static final int VERTICAL_SPACING = 36;
 
-    public final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
+    public final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
     private final Screen parentScreen;
     private final boolean isEditMode;
     private final String initialFileName;
@@ -22,13 +22,13 @@ public class PackPropertiesDialog extends Screen {
     private final String initialDescription;
     private final PackPropertiesCallback callback;
 
-    private @Nullable EditBoxWidget fileNameField;
-    private @Nullable EditBoxWidget nameField;
-    private @Nullable EditBoxWidget descriptionField;
+    private @Nullable EditBox fileNameField;
+    private @Nullable EditBox nameField;
+    private @Nullable EditBox descriptionField;
 
-    private Text fileNameLabelText;
-    private Text nameLabelText;
-    private Text descriptionLabelText;
+    private Component fileNameLabelText;
+    private Component nameLabelText;
+    private Component descriptionLabelText;
 
     private int fileNameX;
     private int fileNameY;
@@ -38,7 +38,7 @@ public class PackPropertiesDialog extends Screen {
     private int descriptionY;
 
     private PackPropertiesDialog(Screen parentScreen, boolean isEditMode, String initialFileName, String initialName, String initialDescription, PackPropertiesCallback callback) {
-        super(Text.translatable(isEditMode ? "config.emojitype.edit_pack_properties" : "config.emojitype.create_new_pack"));
+        super(Component.translatable(isEditMode ? "config.emojitype.edit_pack_properties" : "config.emojitype.create_new_pack"));
         this.parentScreen = parentScreen;
         this.isEditMode = isEditMode;
         this.initialFileName = initialFileName;
@@ -53,9 +53,9 @@ public class PackPropertiesDialog extends Screen {
         return new PackPropertiesDialog(
                 parentScreen,
                 false,
-                Text.translatable("config.emojitype.default_pack_filename").getString(),
-                Text.translatable("config.emojitype.default_pack_name").getString(),
-                Text.translatable("config.emojitype.default_pack_description").getString(),
+                Component.translatable("config.emojitype.default_pack_filename").getString(),
+                Component.translatable("config.emojitype.default_pack_name").getString(),
+                Component.translatable("config.emojitype.default_pack_description").getString(),
                 callback
         );
     }
@@ -66,41 +66,33 @@ public class PackPropertiesDialog extends Screen {
 
     @Override
     protected void init() {
+        this.layout.removeChildren();
         int centerX = this.width / 2;
         int startY = 40;
 
         this.fileNameX = centerX - FIELD_WIDTH / 2;
         this.fileNameY = startY;
-        this.fileNameLabelText = Text.translatable("config.emojitype.pack_filename");
-        this.fileNameField = EditBoxWidget.builder()
-                .x(this.fileNameX)
-                .y(this.fileNameY)
-                .build(this.textRenderer, FIELD_WIDTH, FIELD_HEIGHT, this.fileNameLabelText);
-        this.fileNameField.setText(initialFileName);
-        this.addDrawableChild(this.fileNameField);
+        this.fileNameLabelText = Component.translatable("config.emojitype.pack_filename");
+        this.fileNameField = new EditBox(this.font, this.fileNameX, this.fileNameY, FIELD_WIDTH, FIELD_HEIGHT, this.fileNameLabelText);
+        this.fileNameField.setValue(initialFileName);
+        this.addRenderableWidget(this.fileNameField);
 
         this.nameX = centerX - FIELD_WIDTH / 2;
         this.nameY = startY + VERTICAL_SPACING;
-        this.nameLabelText = Text.translatable("config.emojitype.pack_name");
-        this.nameField = EditBoxWidget.builder()
-                .x(this.nameX)
-                .y(this.nameY)
-                .build(this.textRenderer, FIELD_WIDTH, FIELD_HEIGHT, this.nameLabelText);
-        this.nameField.setText(initialName);
-        this.addDrawableChild(this.nameField);
+        this.nameLabelText = Component.translatable("config.emojitype.pack_name");
+        this.nameField = new EditBox(this.font, this.nameX, this.nameY, FIELD_WIDTH, FIELD_HEIGHT, this.nameLabelText);
+        this.nameField.setValue(initialName);
+        this.addRenderableWidget(this.nameField);
 
         this.descriptionX = centerX - FIELD_WIDTH / 2;
         this.descriptionY = startY + VERTICAL_SPACING * 2;
-        this.descriptionLabelText = Text.translatable("config.emojitype.pack_description");
-        this.descriptionField = EditBoxWidget.builder()
-                .x(this.descriptionX)
-                .y(this.descriptionY)
-                .build(this.textRenderer, FIELD_WIDTH, FIELD_HEIGHT, this.descriptionLabelText);
-        this.descriptionField.setText(initialDescription);
-        this.addDrawableChild(this.descriptionField);
+        this.descriptionLabelText = Component.translatable("config.emojitype.pack_description");
+        this.descriptionField = new EditBox(this.font, this.descriptionX, this.descriptionY, FIELD_WIDTH, FIELD_HEIGHT, this.descriptionLabelText);
+        this.descriptionField.setValue(initialDescription);
+        this.addRenderableWidget(this.descriptionField);
 
         this.initFooter();
-        this.layout.forEachChild(this::addDrawableChild);
+        this.layout.visitWidgets(this::addRenderableWidget);
         this.refreshWidgetPositions();
 
         if (this.nameField != null) {
@@ -109,33 +101,33 @@ public class PackPropertiesDialog extends Screen {
     }
 
     protected void initFooter() {
-        DirectionalLayoutWidget footerLayout = this.layout.addFooter(DirectionalLayoutWidget.horizontal()).spacing(8);
+        LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal()).spacing(8);
 
-        footerLayout.add(ButtonWidget.builder(Text.translatable("config.emojitype.cancel"), button -> this.close()).width(100).build());
+        footerLayout.addChild(Button.builder(Component.translatable("config.emojitype.cancel"), button -> this.close()).width(100).build());
 
-        Text confirmButtonText = Text.translatable(isEditMode ? "config.emojitype.save" : "config.emojitype.create");
-        footerLayout.add(ButtonWidget.builder(confirmButtonText, button -> this.confirm()).width(100).build());
+        Component confirmButtonText = Component.translatable(isEditMode ? "config.emojitype.save" : "config.emojitype.create");
+        footerLayout.addChild(Button.builder(confirmButtonText, button -> this.confirm()).width(100).build());
     }
 
     protected void refreshWidgetPositions() {
-        this.layout.refreshPositions();
+        this.layout.arrangeElements();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(context, mouseX, mouseY, delta);
 
-        int titleX = (this.width - this.textRenderer.getWidth(this.title)) / 2;
-        context.drawText(this.textRenderer, this.title, titleX, 15, UIColors.WHITE, false);
+        int titleX = (this.width - this.font.width(this.title)) / 2;
+        context.text(this.font, this.title, titleX, 15, UIColors.WHITE, false);
 
         if (this.fileNameField != null) {
-            context.drawText(this.textRenderer, this.fileNameLabelText, this.fileNameX, this.fileNameY - 10, UIColors.LABEL_GRAY, false);
+            context.text(this.font, this.fileNameLabelText, this.fileNameX, this.fileNameY - 10, UIColors.LABEL_GRAY, false);
         }
         if (this.nameField != null) {
-            context.drawText(this.textRenderer, this.nameLabelText, this.nameX, this.nameY - 10, UIColors.LABEL_GRAY, false);
+            context.text(this.font, this.nameLabelText, this.nameX, this.nameY - 10, UIColors.LABEL_GRAY, false);
         }
         if (this.descriptionField != null) {
-            context.drawText(this.textRenderer, this.descriptionLabelText, this.descriptionX, this.descriptionY - 10, UIColors.LABEL_GRAY, false);
+            context.text(this.font, this.descriptionLabelText, this.descriptionX, this.descriptionY - 10, UIColors.LABEL_GRAY, false);
         }
     }
 
@@ -145,9 +137,9 @@ public class PackPropertiesDialog extends Screen {
             return;
         }
 
-        String fileName = this.fileNameField.getText().trim();
-        String name = this.nameField.getText().trim();
-        String description = this.descriptionField.getText().trim();
+        String fileName = this.fileNameField.getValue().trim();
+        String name = this.nameField.getValue().trim();
+        String description = this.descriptionField.getValue().trim();
 
         if (fileName.isEmpty()) {
             fileName = initialFileName;
@@ -166,9 +158,13 @@ public class PackPropertiesDialog extends Screen {
     }
 
     @Override
+    public void onClose() {
+        this.close();
+    }
+
     public void close() {
-        if (this.client != null) {
-            this.client.setScreen(this.parentScreen);
+        if (this.minecraft != null) {
+            this.minecraft.setScreenAndShow(this.parentScreen);
         }
     }
 

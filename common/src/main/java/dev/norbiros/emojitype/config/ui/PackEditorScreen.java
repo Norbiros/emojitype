@@ -6,12 +6,12 @@ import dev.norbiros.emojitype.packs.PackLoader;
 import dev.norbiros.emojitype.packs.PackType;
 import dev.norbiros.emojitype.packs.types.BundledPack;
 import dev.norbiros.emojitype.packs.types.EmojiPack;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
@@ -22,14 +22,14 @@ public class PackEditorScreen extends Screen {
     private static final int HEADER_HEIGHT = 30;
     private static final int FOOTER_HEIGHT = 30;
 
-    public final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
+    public final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
     protected final Screen parentScreen;
     private final EmojiPack pack;
     private String packFileName;
     private @Nullable EmojiListWidget body;
 
     public PackEditorScreen(Screen parentScreen, String packFileName, EmojiPack pack) {
-        super(Text.translatable("config.emojitype.edit_pack_title", pack.getName() != null ? pack.getName() : packFileName));
+        super(Component.translatable("config.emojitype.edit_pack_title", pack.getName() != null ? pack.getName() : packFileName));
         this.parentScreen = parentScreen;
         this.packFileName = packFileName;
         this.pack = pack;
@@ -39,9 +39,10 @@ public class PackEditorScreen extends Screen {
 
     @Override
     protected void init() {
-        this.layout.addHeader(this.title, this.textRenderer);
+        this.layout.removeChildren();
+        this.layout.addTitleHeader(this.title, this.font);
 
-        EmojiListWidget emojiListWidget = new EmojiListWidget(client, width, height - HEADER_HEIGHT - FOOTER_HEIGHT, HEADER_HEIGHT, 24);
+        EmojiListWidget emojiListWidget = new EmojiListWidget(this.minecraft, width, height - HEADER_HEIGHT - FOOTER_HEIGHT, HEADER_HEIGHT, 24);
 
         List<EmojiCode> emojiCodes = pack.getEmojiCodes();
         if (emojiCodes != null && !emojiCodes.isEmpty()) {
@@ -52,50 +53,50 @@ public class PackEditorScreen extends Screen {
             emojiListWidget.addEntry(new EmojiCode("", ""));
         }
 
-        this.body = this.layout.addBody(emojiListWidget);
+        this.body = this.layout.addToContents(emojiListWidget);
 
         this.initFooter();
 
-        this.layout.forEachChild(this::addDrawableChild);
+        this.layout.visitWidgets(this::addRenderableWidget);
         this.refreshWidgetPositions();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(context, mouseX, mouseY, delta);
 
         String typeLabel = pack.getPackType().getTranslatedLabel().getString();
         int emojiCount = this.body != null ? this.body.children().size() : (pack.getEmojis() != null ? pack.getEmojis().size() : 0);
-        String metadata = typeLabel + "  |  " + Text.translatable("config.emojitype.emoji_count", emojiCount).getString();
-        int metadataWidth = this.textRenderer.getWidth(metadata);
-        context.drawText(this.textRenderer, metadata, this.width - 12 - metadataWidth, 8, UIColors.LIGHT_GRAY, false);
+        String metadata = typeLabel + "  |  " + Component.translatable("config.emojitype.emoji_count", emojiCount).getString();
+        int metadataWidth = this.font.width(metadata);
+        context.text(this.font, metadata, this.width - 12 - metadataWidth, 8, UIColors.LIGHT_GRAY, false);
     }
 
     protected void refreshWidgetPositions() {
-        this.layout.refreshPositions();
+        this.layout.arrangeElements();
         if (this.body != null) {
-            this.body.position(this.width, this.layout);
+            this.body.updateSize(this.width, this.layout);
         }
     }
 
     protected void initFooter() {
-        DirectionalLayoutWidget footerLayout = this.layout.addFooter(DirectionalLayoutWidget.horizontal()).spacing(8);
+        LinearLayout footerLayout = this.layout.addToFooter(LinearLayout.horizontal()).spacing(8);
 
-        footerLayout.add(ButtonWidget.builder(Text.translatable("config.emojitype.cancel"), button -> this.close()).width(100).build());
+        footerLayout.addChild(Button.builder(Component.translatable("config.emojitype.cancel"), button -> this.close()).width(100).build());
 
         if (pack.getPackType() == PackType.LOCAL) {
-            footerLayout.add(ButtonWidget.builder(Text.translatable("config.emojitype.edit_properties"), button -> this.editProperties()).width(120).build());
+            footerLayout.addChild(Button.builder(Component.translatable("config.emojitype.edit_properties"), button -> this.editProperties()).width(120).build());
         }
 
         if (pack.getPackType() == PackType.BUNDLED) {
-            footerLayout.add(ButtonWidget.builder(Text.translatable("config.emojitype.restore_default"), button -> this.restoreToDefault()).width(130).build());
+            footerLayout.addChild(Button.builder(Component.translatable("config.emojitype.restore_default"), button -> this.restoreToDefault()).width(130).build());
         }
 
         if (pack.getPackType() == PackType.LOCAL) {
-            footerLayout.add(ButtonWidget.builder(Text.translatable("config.emojitype.delete_pack"), button -> this.deletePack()).width(100).build());
+            footerLayout.addChild(Button.builder(Component.translatable("config.emojitype.delete_pack"), button -> this.deletePack()).width(100).build());
         }
 
-        footerLayout.add(ButtonWidget.builder(Text.translatable("config.emojitype.save"), button -> this.saveChanges()).width(100).build());
+        footerLayout.addChild(Button.builder(Component.translatable("config.emojitype.save"), button -> this.saveChanges()).width(100).build());
     }
 
     private void saveChanges() {
@@ -120,11 +121,11 @@ public class PackEditorScreen extends Screen {
             return;
         }
 
-        if (this.client != null) {
+        if (this.minecraft != null) {
             String currentName = pack.getName() != null ? pack.getName() : "";
             String currentDescription = pack.getDescription() != null ? pack.getDescription() : "";
 
-            this.client.setScreen(PackPropertiesDialog.edit(this, packFileName, currentName, currentDescription,
+            this.minecraft.setScreenAndShow(PackPropertiesDialog.edit(this, packFileName, currentName, currentDescription,
                     (newFileName, newName, newDescription) -> {
                         pack.setName(newName);
                         pack.setDescription(newDescription);
@@ -136,10 +137,9 @@ public class PackEditorScreen extends Screen {
                                 boolean deletedOldFile = PackLoader.deletePack(packFileName);
                                 if (!deletedOldFile) {
                                     EmojiType.LOGGER.warn("Failed to delete old emoji pack file '{}'", packFileName);
-                                    if (this.client != null && this.client.player != null) {
-                                        this.client.player.sendMessage(
-                                            Text.literal("Warning: Old emoji pack file '" + packFileName + "' could not be deleted. It may still exist on disk."),
-                                            false
+                                    if (this.minecraft != null && this.minecraft.player != null) {
+                                        this.minecraft.player.sendSystemMessage(
+                                            Component.literal("Warning: Old emoji pack file '" + packFileName + "' could not be deleted. It may still exist on disk.")
                                         );
                                     }
                                 }
@@ -156,16 +156,15 @@ public class PackEditorScreen extends Screen {
                                     this.packFileName = newFileName;
 
                                     EmojiPack updatedPack = EmojiType.getAvailablePacks().get(newFileName);
-                                    if (updatedPack != null && this.client != null) {
+                                    if (updatedPack != null) {
                                         Screen packListScreen = getPackListScreen();
-                                        this.client.setScreen(new PackEditorScreen(packListScreen, newFileName, updatedPack));
+                                        this.minecraft.setScreenAndShow(new PackEditorScreen(packListScreen, newFileName, updatedPack));
                                     }
                                 } catch (Exception e) {
                                     EmojiType.LOGGER.error("Failed to reload or re-enable emoji pack after renaming file from {} to {}", packFileName, newFileName, e);
-                                    if (this.client != null && this.client.player != null) {
-                                        this.client.player.sendMessage(
-                                            Text.literal("Failed to reload emoji packs after renaming. Check logs for details."),
-                                            false
+                                    if (this.minecraft.player != null) {
+                                        this.minecraft.player.sendSystemMessage(
+                                            Component.literal("Failed to reload emoji packs after renaming. Check logs for details.")
                                         );
                                     }
                                 }
@@ -175,19 +174,16 @@ public class PackEditorScreen extends Screen {
                             if (pack.save()) {
                                 try {
                                     EmojiType.reloadPacksFromDisk();
-                                    if (this.client != null) {
-                                        EmojiPack updatedPack = EmojiType.getAvailablePacks().get(packFileName);
-                                        if (updatedPack != null) {
-                                            Screen packListScreen = getPackListScreen();
-                                            this.client.setScreen(new PackEditorScreen(packListScreen, packFileName, updatedPack));
-                                        }
+                                    EmojiPack updatedPack = EmojiType.getAvailablePacks().get(packFileName);
+                                    if (updatedPack != null) {
+                                        Screen packListScreen = getPackListScreen();
+                                        this.minecraft.setScreenAndShow(new PackEditorScreen(packListScreen, packFileName, updatedPack));
                                     }
                                 } catch (Exception e) {
                                     EmojiType.LOGGER.error("Failed to reload emoji packs after saving pack {}", packFileName, e);
-                                    if (this.client != null && this.client.player != null) {
-                                        this.client.player.sendMessage(
-                                            Text.literal("Failed to reload emoji packs after saving. Check logs for details."),
-                                            false
+                                    if (this.minecraft.player != null) {
+                                        this.minecraft.player.sendSystemMessage(
+                                            Component.literal("Failed to reload emoji packs after saving. Check logs for details.")
                                         );
                                     }
                                 }
@@ -241,32 +237,32 @@ public class PackEditorScreen extends Screen {
             return;
         }
 
-        if (this.client != null) {
-            String packDisplayName = pack.getName() != null && !pack.getName().isEmpty() ? pack.getName() : packFileName;
+        String packDisplayName = pack.getName() != null && !pack.getName().isEmpty() ? pack.getName() : packFileName;
 
-            this.client.setScreen(new ConfirmationDialog(
-                    this,
-                    Text.translatable("config.emojitype.delete_pack_title"),
-                    Text.translatable("config.emojitype.delete_pack_confirm", packDisplayName),
-                    () -> {
-                        EmojiType.disablePack(packFileName);
+        this.minecraft.setScreenAndShow(new ConfirmationDialog(
+                this,
+                Component.translatable("config.emojitype.delete_pack_title"),
+                Component.translatable("config.emojitype.delete_pack_confirm", packDisplayName),
+                () -> {
+                    EmojiType.disablePack(packFileName);
 
-                        if (PackLoader.deletePack(packFileName)) {
-                            EmojiType.LOGGER.info("Pack deleted: {}", packFileName);
-                            EmojiType.reloadPacksFromDisk();
-                        } else {
-                            EmojiType.LOGGER.error("Failed to delete pack: {}", packFileName);
-                        }
-                    },
-                    new EmojiTypeConfig(this.parentScreen instanceof EmojiTypeConfig config ? config.parent : this.parentScreen)
-            ));
-        }
+                    if (PackLoader.deletePack(packFileName)) {
+                        EmojiType.LOGGER.info("Pack deleted: {}", packFileName);
+                        EmojiType.reloadPacksFromDisk();
+                    } else {
+                        EmojiType.LOGGER.error("Failed to delete pack: {}", packFileName);
+                    }
+                },
+                new EmojiTypeConfig(this.parentScreen instanceof EmojiTypeConfig config ? config.parent : this.parentScreen)
+        ));
     }
 
     @Override
+    public void onClose() {
+        this.close();
+    }
+
     public void close() {
-        if (this.client != null) {
-            this.client.setScreen(getPackListScreen());
-        }
+        this.minecraft.setScreenAndShow(getPackListScreen());
     }
 }

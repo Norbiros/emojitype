@@ -13,15 +13,15 @@ val rootLibs = libs
 
 subprojects {
     apply(plugin = "com.gradleup.shadow")
-    apply(plugin = "dev.architectury.loom")
+    apply(plugin = "dev.architectury.loom-no-remap")
 
-    val common: Configuration by configurations.creating
-    val shadowCommon: Configuration by configurations.creating // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    val compileClasspath: Configuration by configurations.getting
-    val runtimeClasspath: Configuration by configurations.getting
+    val common = configurations.create("common")
+    val shadowCommon = configurations.create("shadowCommon") // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    val compileClasspath = configurations.named("compileClasspath")
+    val runtimeClasspath = configurations.named("runtimeClasspath")
 
-    compileClasspath.extendsFrom(common)
-    runtimeClasspath.extendsFrom(common)
+    compileClasspath.configure { extendsFrom(common) }
+    runtimeClasspath.configure { extendsFrom(common) }
 
     configurations.configureEach {
         if (name == "developmentFabric") {
@@ -50,6 +50,7 @@ subprojects {
     }
 
     configure<net.fabricmc.loom.api.LoomGradleExtensionAPI> {
+        noIntermediateMappings()
         silentMojangMappingsLicense()
     }
 
@@ -57,11 +58,6 @@ subprojects {
         "minecraft"(rootLibs.minecraft)
         implementation(rootLibs.snakeyaml)
 
-        val loom = project.extensions.getByType<net.fabricmc.loom.api.LoomGradleExtensionAPI>()
-        "mappings"(loom.layered {
-            mappings(rootLibs.yarn.mappings.get().toString() + ":v2")
-            mappings(rootLibs.neoforge.yarn.mappings.patch.get().toString())
-        })
     }
 
     tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
@@ -95,7 +91,7 @@ allprojects {
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release.set(21)
+        options.release.set(project.property("java_version").toString().toInt())
     }
 
     configure<JavaPluginExtension> {

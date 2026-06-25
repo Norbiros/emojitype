@@ -14,19 +14,20 @@ configurations {
 }
 
 dependencies {
-    "modImplementation"(libs.fabric.loader)
-    "modApi"(libs.modmenu)
+    implementation(libs.fabric.loader)
+    api(libs.modmenu)
 
-    include(libs.snakeyaml)
-
-    common(project(path = ":common", configuration = "namedElements")) { isTransitive = false }
-    shadowCommon(project(path = ":common", configuration = "transformProductionFabric")) { isTransitive = false }
+    common(project(path = ":common", configuration = "mergedElements")) { isTransitive = false }
+    shadowCommon(project(path = ":common", configuration = "transformProductionFabricElements")) { isTransitive = false }
+    shadowCommon("org.yaml:snakeyaml:${libs.versions.snakeyaml.get()}")
 }
 
-tasks.remapJar {
-    inputFile.set(tasks.shadowJar.get().archiveFile)
-    dependsOn(tasks.shadowJar)
+tasks.shadowJar {
     archiveClassifier.set("fabric")
+}
+
+tasks.assemble {
+    dependsOn(tasks.shadowJar)
 }
 
 tasks.sourcesJar {
@@ -45,8 +46,8 @@ publishing {
     publications {
         create<MavenPublication>("mavenFabric") {
             artifactId = "${project.property("mod_id")}-fabric"
-            from(components["java"])
+            artifact(tasks.shadowJar)
+            artifact(tasks.sourcesJar)
         }
     }
 }
-

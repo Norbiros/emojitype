@@ -16,16 +16,17 @@ configurations {
 dependencies {
     "neoForge"(libs.neoforge)
 
-    include(libs.snakeyaml)
-
-    common(project(path = ":common", configuration = "namedElements")) { isTransitive = false }
-    shadowCommon(project(path = ":common", configuration = "transformProductionNeoForge")) { isTransitive = false }
+    common(project(path = ":common", configuration = "mergedElements")) { isTransitive = false }
+    shadowCommon(project(path = ":common", configuration = "transformProductionNeoForgeElements")) { isTransitive = false }
+    shadowCommon("org.yaml:snakeyaml:${libs.versions.snakeyaml.get()}")
 }
 
-tasks.remapJar {
-    inputFile.set(tasks.shadowJar.get().archiveFile)
-    dependsOn(tasks.shadowJar)
+tasks.shadowJar {
     archiveClassifier.set("neoforge")
+}
+
+tasks.assemble {
+    dependsOn(tasks.shadowJar)
 }
 
 tasks.sourcesJar {
@@ -44,8 +45,8 @@ publishing {
     publications {
         create<MavenPublication>("mavenNeoForge") {
             artifactId = "${project.property("mod_id")}-neoforge"
-            from(components["java"])
+            artifact(tasks.shadowJar)
+            artifact(tasks.sourcesJar)
         }
     }
 }
-

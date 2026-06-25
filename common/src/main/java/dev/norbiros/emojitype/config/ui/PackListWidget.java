@@ -3,24 +3,24 @@ package dev.norbiros.emojitype.config.ui;
 import dev.norbiros.emojitype.EmojiType;
 import dev.norbiros.emojitype.packs.PackType;
 import dev.norbiros.emojitype.packs.types.EmojiPack;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.CheckboxWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> {
+public class PackListWidget extends ContainerObjectSelectionList<PackListWidget.PackEntry> {
     private final EmojiTypeConfig parentScreen;
 
-    public PackListWidget(MinecraftClient client, int width, int height, int top, int itemHeight, EmojiTypeConfig parentScreen) {
+    public PackListWidget(Minecraft client, int width, int height, int top, int itemHeight, EmojiTypeConfig parentScreen) {
         super(client, width, height, top, itemHeight);
         this.parentScreen = parentScreen;
     }
@@ -35,15 +35,15 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
     }
 
     public int getItemHeightValue() {
-        return this.itemHeight;
+        return this.defaultEntryHeight;
     }
 
     @Override
-    protected int getScrollbarX() {
+    protected int scrollBarX() {
         return width - 12;
     }
 
-    public static class PackEntry extends ElementListWidget.Entry<PackEntry> {
+    public static class PackEntry extends ContainerObjectSelectionList.Entry<PackEntry> {
         private static final int BADGE_PADDING_X = 6;
         private static final int BADGE_PADDING_Y = 2;
         private static final int CHECKBOX_MARGIN = 4;
@@ -52,20 +52,20 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
 
         private final PackListWidget parentWidget;
         private final EmojiPack pack;
-        private final List<ClickableWidget> elements = new ArrayList<>();
-        private final CheckboxWidget enabledCheckbox;
-        private final ButtonWidget editButton;
+        private final List<AbstractWidget> elements = new ArrayList<>();
+        private final Checkbox enabledCheckbox;
+        private final Button editButton;
 
         public PackEntry(int entryWidth, EmojiPack pack, PackListWidget parentWidget) {
             this.parentWidget = parentWidget;
             this.pack = pack;
-            MinecraftClient client = MinecraftClient.getInstance();
+            Minecraft client = Minecraft.getInstance();
 
             boolean enabled = EmojiType.isPackEnabled(pack.getFileName());
-            this.enabledCheckbox = CheckboxWidget.builder(Text.empty(), client.textRenderer)
+            this.enabledCheckbox = Checkbox.builder(Component.empty(), client.font)
                     .pos(0, 0)
-                    .checked(enabled)
-                    .callback((checkbox, checked) -> {
+                    .selected(enabled)
+                    .onValueChange((checkbox, checked) -> {
                         if (checked) {
                             EmojiType.enablePack(pack.getFileName());
                         } else {
@@ -75,12 +75,12 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
                     .build();
             this.elements.add(enabledCheckbox);
 
-            this.editButton = ButtonWidget
-                    .builder(Text.translatable("config.emojitype.edit_pack"), button -> {
+            this.editButton = Button
+                    .builder(Component.translatable("config.emojitype.edit_pack"), button -> {
                         parentWidget.parentScreen.openPackEditor(pack.getFileName(), pack);
                     })
-                    .dimensions(0, 0, 80, 20)
-                    .tooltip(Tooltip.of(Text.translatable("config.emojitype.edit_pack_tooltip")))
+                    .bounds(0, 0, 80, 20)
+                    .tooltip(Tooltip.create(Component.translatable("config.emojitype.edit_pack_tooltip")))
                     .build();
             this.elements.add(editButton);
         }
@@ -89,17 +89,19 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
             return pack;
         }
 
-        public List<? extends Element> children() {
-            return this.elements;
-        }
-
-        public List<? extends Selectable> selectableChildren() {
+        @Override
+        public List<? extends GuiEventListener> children() {
             return this.elements;
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            MinecraftClient client = MinecraftClient.getInstance();
+        public List<? extends NarratableEntry> narratables() {
+            return this.elements;
+        }
+
+        @Override
+        public void extractContent(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            Minecraft client = Minecraft.getInstance();
 
             int rowX = this.getX();
             int rowY = this.getY();
@@ -125,10 +127,10 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
             editButton.setY(buttonY);
 
             int textX = checkboxX + checkboxWidth + TEXT_MARGIN;
-            int lineHeight = client.textRenderer.fontHeight;
+            int lineHeight = client.font.lineHeight;
             int textY = rowY + 4;
 
-            boolean enabled = enabledCheckbox.isChecked();
+            boolean enabled = enabledCheckbox.selected();
             int nameColor = UIColors.getEnabledTextColor(enabled);
             int descriptionColor = UIColors.getEnabledDescriptionColor(enabled);
             int statsColor = UIColors.getEnabledStatsColor(enabled);
@@ -136,14 +138,14 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
             PackType packType = pack.getPackType();
             String typeLabel = packType.getTranslatedLabel().getString();
             int emojiCount = pack.getEmojis() != null ? pack.getEmojis().size() : 0;
-            String countLabel = Text.translatable("config.emojitype.emoji_count", emojiCount).getString();
+            String countLabel = Component.translatable("config.emojitype.emoji_count", emojiCount).getString();
 
             String description = pack.getDescription() != null && !pack.getDescription().isEmpty()
                     ? pack.getDescription()
-                    : Text.translatable("config.emojitype.no_description").getString();
+                    : Component.translatable("config.emojitype.no_description").getString();
             String statsLine = countLabel + "  |  " + pack.getFileName();
 
-            int badgeTextWidth = client.textRenderer.getWidth(typeLabel);
+            int badgeTextWidth = client.font.width(typeLabel);
             int badgeWidth = badgeTextWidth + BADGE_PADDING_X * 2;
             int badgeHeight = lineHeight + BADGE_PADDING_Y * 2;
             int badgeX = buttonX - badgeWidth - BADGE_MARGIN;
@@ -151,8 +153,8 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
 
             UIColors.drawBadge(context, badgeX, badgeY, badgeWidth, badgeHeight, packType);
 
-            context.drawText(
-                    client.textRenderer,
+            context.text(
+                    client.font,
                     typeLabel,
                     badgeX + BADGE_PADDING_X,
                     badgeY + BADGE_PADDING_Y + 1,
@@ -161,35 +163,35 @@ public class PackListWidget extends ElementListWidget<PackListWidget.PackEntry> 
             );
 
             int textMaxWidth = Math.max(0, badgeX - textX - BADGE_MARGIN);
-            String trimmedName = client.textRenderer.trimToWidth(pack.getName(), textMaxWidth);
-            String trimmedDescription = client.textRenderer.trimToWidth(description, textMaxWidth);
-            String trimmedStatsLine = client.textRenderer.trimToWidth(statsLine, textMaxWidth);
+            String trimmedName = client.font.plainSubstrByWidth(pack.getName(), textMaxWidth);
+            String trimmedDescription = client.font.plainSubstrByWidth(description, textMaxWidth);
+            String trimmedStatsLine = client.font.plainSubstrByWidth(statsLine, textMaxWidth);
 
-            context.drawText(
-                    client.textRenderer,
+            context.text(
+                    client.font,
                     trimmedName,
                     textX,
                     textY,
                     nameColor,
                     true
             );
-            context.drawTextWithShadow(
-                    client.textRenderer,
+            context.text(
+                    client.font,
                     trimmedDescription,
                     textX,
                     textY + lineHeight + 2,
                     descriptionColor
             );
-            context.drawTextWithShadow(
-                    client.textRenderer,
+            context.text(
+                    client.font,
                     trimmedStatsLine,
                     textX,
                     textY + (lineHeight * 2) + 4,
                     statsColor
             );
 
-            enabledCheckbox.render(context, mouseX, mouseY, tickDelta);
-            editButton.render(context, mouseX, mouseY, tickDelta);
+            enabledCheckbox.extractRenderState(context, mouseX, mouseY, tickDelta);
+            editButton.extractRenderState(context, mouseX, mouseY, tickDelta);
         }
     }
 }
